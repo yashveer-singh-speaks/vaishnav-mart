@@ -1,0 +1,68 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && request.auth.token.role == 'super_admin';
+    }
+
+    // Public Collections (Read-only for public, Admin write)
+    match /products/{productId} {
+      allow read: if resource.data.status == 'active' || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    match /categories/{categoryId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /pages/{pageSlug} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /pageVersions/{versionId} {
+      allow read, write: if isAdmin();
+    }
+
+    match /settings/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Customer Private Records
+    match /users/{userId} {
+      allow read, write: if isOwner(userId) || isAdmin();
+    }
+
+    match /carts/{userId} {
+      allow read, write: if isOwner(userId) || isAdmin();
+    }
+
+    match /orders/{orderId} {
+      allow read: if isAuthenticated() && (resource.data.userId == request.auth.uid || isAdmin());
+      // Orders can only be created by customer; updates are restricted to admin or trusted server logic
+      allow create: if isAuthenticated() && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if isAdmin();
+    }
+
+    // Administrative audit logs and notifications
+    match /auditLogs/{logId} {
+      allow read, write: if isAdmin();
+    }
+
+    match /notifications/{notifId} {
+      allow read, write: if isAdmin();
+    }
+  }
+}
