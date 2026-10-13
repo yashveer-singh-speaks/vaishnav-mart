@@ -134,14 +134,14 @@ export const ProductDetailClient: React.FC<ProductDetailClientProps> = ({
                   ₹{product.price}
                 </span>
                 {product.mrp > product.price && (
-                  <span className="font-sans text-base text-taupe line-through">
-                    MRP ₹{product.mrp}
-                  </span>
-                )}
-                {discountPercent > 0 && (
-                  <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-botanical/10 text-botanical">
-                    Save {discountPercent}%
-                  </span>
+                  <>
+                    <span className="font-sans text-base text-taupe line-through">
+                      MRP ₹{product.mrp}
+                    </span>
+                    <span className="text-xs font-bold px-2.5 py-1 rounded-md bg-clay text-ivory uppercase tracking-wider shadow-sm">
+                      {discountPercent}% OFF
+                    </span>
+                  </>
                 )}
               </div>
 
@@ -156,6 +156,23 @@ export const ProductDetailClient: React.FC<ProductDetailClientProps> = ({
                 )}
               </div>
             </div>
+
+            {/* Combo Bundle Included Items */}
+            {product.isCombo && product.comboItemNames && product.comboItemNames.length > 0 && (
+              <div className="p-4 bg-cream/40 border border-gold/40 rounded-2xl space-y-2">
+                <span className="text-xs font-bold uppercase tracking-wider text-copper block">
+                  Items Included in this Combo:
+                </span>
+                <ul className="space-y-1 text-xs text-cocoa">
+                  {product.comboItemNames.map((item, idx) => (
+                    <li key={idx} className="flex items-center gap-2">
+                      <span className="text-burgundy font-bold">✓</span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
             {/* Quantity Selector & Purchase Actions */}
             <div className="space-y-3 pt-2">
@@ -205,20 +222,26 @@ export const ProductDetailClient: React.FC<ProductDetailClientProps> = ({
               </div>
             </div>
 
-            {/* Delivery & Purity Badges */}
+            {/* Delivery & Purity Badges (Including Pan India & No Return Policy Notice) */}
             <div className="grid grid-cols-3 gap-2 pt-4 border-t border-sand text-center">
               <div className="p-3 bg-porcelain rounded-xl border border-sand/60">
                 <Truck className="w-4 h-4 mx-auto text-copper mb-1" />
-                <p className="text-[10px] text-taupe font-medium">Delhi NCR Express</p>
+                <p className="text-[10px] text-cocoa font-semibold">Pan India Delivery</p>
+                <p className="text-[9px] text-taupe">Serving All States</p>
               </div>
               <div className="p-3 bg-porcelain rounded-xl border border-sand/60">
                 <ShieldCheck className="w-4 h-4 mx-auto text-burgundy mb-1" />
-                <p className="text-[10px] text-taupe font-medium">100% Satvik Verified</p>
+                <p className="text-[10px] text-cocoa font-semibold">100% Satvik Verified</p>
+                <p className="text-[9px] text-taupe">Zero Allium</p>
               </div>
-              <div className="p-3 bg-porcelain rounded-xl border border-sand/60">
-                <RotateCcw className="w-4 h-4 mx-auto text-copper mb-1" />
-                <p className="text-[10px] text-taupe font-medium">Intact Purity Seal</p>
-              </div>
+              <Link
+                href="/return-policy"
+                className="p-3 bg-porcelain rounded-xl border border-sand/60 hover:border-gold/60 transition-colors group"
+              >
+                <RotateCcw className="w-4 h-4 mx-auto text-copper mb-1 group-hover:text-burgundy" />
+                <p className="text-[10px] text-cocoa font-semibold group-hover:text-burgundy">No Return Policy</p>
+                <p className="text-[9px] text-taupe group-hover:underline">Learn Why ↗</p>
+              </Link>
             </div>
 
             {/* Accordion Information (Only displays non-empty sections) */}

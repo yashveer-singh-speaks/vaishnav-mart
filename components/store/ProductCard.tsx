@@ -57,14 +57,24 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, priorityImage
           />
         </Link>
 
-        {/* Feature Badges */}
-        {product.features && product.features.length > 0 && (
-          <div className="absolute top-2.5 left-2.5 flex flex-col gap-1 z-10 pointer-events-none">
-            <span className="bg-ivory/90 backdrop-blur-md text-burgundy text-[10px] sm:text-xs font-semibold px-2 py-0.5 rounded-md shadow-sm border border-sand">
+        {/* Feature & Discount Badges */}
+        <div className="absolute top-2.5 left-2.5 flex flex-col gap-1 z-10 pointer-events-none">
+          {product.mrp > product.price && (
+            <span className="bg-clay text-ivory text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-md shadow-md tracking-wider uppercase">
+              {Math.round(((product.mrp - product.price) / product.mrp) * 100)}% OFF
+            </span>
+          )}
+          {product.isCombo && (
+            <span className="bg-gold text-cocoa text-[9px] sm:text-[10px] font-bold px-1.5 py-0.5 rounded-md shadow-sm border border-gold-light uppercase tracking-wider">
+              Combo Bundle
+            </span>
+          )}
+          {!product.isCombo && product.features && product.features.length > 0 && (
+            <span className="bg-ivory/95 backdrop-blur-md text-burgundy text-[10px] font-semibold px-2 py-0.5 rounded-md shadow-sm border border-sand">
               {product.features[0].name}
             </span>
-          </div>
-        )}
+          )}
+        </div>
 
         {/* Wishlist Button */}
         <button
@@ -128,9 +138,16 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, priorityImage
               {product.name}
             </h3>
           </Link>
-          <p className="text-xs text-taupe line-clamp-1 mt-0.5">
-            {product.features.map((f) => f.name).join(' • ')}
-          </p>
+          {product.isCombo && product.comboItemNames && (
+            <div className="mt-1 text-[11px] text-copper font-medium line-clamp-1 bg-cream/40 px-1.5 py-0.5 rounded">
+              Includes: {product.comboItemNames.join(', ')}
+            </div>
+          )}
+          {!product.isCombo && (
+            <p className="text-xs text-taupe line-clamp-1 mt-0.5">
+              {product.features.map((f) => f.name).join(' • ')}
+            </p>
+          )}
         </div>
 
         {/* Price & Mobile Add */}
@@ -140,9 +157,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, priorityImage
               ₹{product.price}
             </span>
             {product.mrp > product.price && (
-              <span className="font-sans text-xs text-taupe line-through">
-                ₹{product.mrp}
-              </span>
+              <>
+                <span className="font-sans text-xs text-taupe line-through">
+                  ₹{product.mrp}
+                </span>
+                <span className="text-[10px] font-bold text-botanical uppercase tracking-wide">
+                  ({Math.round(((product.mrp - product.price) / product.mrp) * 100)}% OFF)
+                </span>
+              </>
             )}
           </div>
 

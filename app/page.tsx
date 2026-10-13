@@ -9,6 +9,7 @@ import { FounderStorySection } from '@/components/store/FounderStorySection'
 import { FeaturedSixSection } from '@/components/store/FeaturedSixSection'
 import { PurityStorySection } from '@/components/store/PurityStorySection'
 import { CollaborationSection } from '@/components/store/CollaborationSection'
+import { ComboSection } from '@/components/store/ComboSection'
 
 export const metadata: Metadata = {
   title: 'Vaishnava Mart | Pure Satvik, Jain & Vaishnav Food Products',
@@ -117,6 +118,18 @@ export default async function HomePage() {
                 image={sec.image}
               />
             )
+          case 'combo_showcase': {
+            const comboProducts = allProducts.filter((p) => p.isCombo)
+            return (
+              <ComboSection
+                key={sec.id}
+                combos={comboProducts.length > 0 ? comboProducts : allProducts.slice(0, 2)}
+                heading={sec.heading}
+                subheading={sec.subheading}
+                body={sec.body}
+              />
+            )
+          }
           case 'collaboration_cta':
             return (
               <CollaborationSection

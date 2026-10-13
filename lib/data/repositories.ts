@@ -224,7 +224,17 @@ export const CategoryRepository = {
 
   async getCategoryBySlug(slug: string): Promise<Category | null> {
     syncFromStorage()
-    return mockCategoriesStore.find((c) => c.slug === slug) || null
+    // Alias mapping for smooth URL backwards-compatibility
+    const aliasMap: Record<string, string> = {
+      'masalas': 'blend-masala-seasoning',
+      'dry-fruits': 'dry-fruits-mix-trails',
+      'ekadashi-foods': 'dry-fruits-mix-trails',
+      'jain-foods': 'blend-masala-seasoning',
+      'vaishnav-foods': 'blend-masala-seasoning',
+      'premixes': 'ready-to-eat-premix',
+    }
+    const resolvedSlug = aliasMap[slug] || slug
+    return mockCategoriesStore.find((c) => c.slug === resolvedSlug || c.slug === slug) || null
   },
 
   async saveCategory(category: Category): Promise<Category> {

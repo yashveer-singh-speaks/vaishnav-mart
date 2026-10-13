@@ -170,7 +170,16 @@ export const Header: React.FC = () => {
                 pathname === '/recipes' ? 'text-burgundy font-semibold' : ''
               }`}
             >
-              Recipes
+              Recipe
+            </Link>
+
+            <Link
+              href="/vaishnav-calendar"
+              className={`hover:text-burgundy transition-colors ${
+                pathname === '/vaishnav-calendar' ? 'text-burgundy font-semibold' : ''
+              }`}
+            >
+              Vaishnav Calendar
             </Link>
 
             <Link
@@ -337,7 +346,15 @@ export const Header: React.FC = () => {
                   onClick={() => setMobileMenuOpen(false)}
                   className="block py-2 hover:text-burgundy"
                 >
-                  Recipes
+                  Recipe
+                </Link>
+
+                <Link
+                  href="/vaishnav-calendar"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block py-2 hover:text-burgundy font-medium text-copper"
+                >
+                  Vaishnav Calendar
                 </Link>
 
                 <Link

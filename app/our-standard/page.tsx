@@ -10,6 +10,12 @@ export const metadata: Metadata = {
 
 const standards = [
   {
+    title: 'Vaishnav & Bhoga Purity',
+    subtitle: 'Suitable for Sacred Seva',
+    desc: 'Prepared in clean, sanctified environments by individuals mindful of devotion. Suitable for Thakurji Bhoga and temple prasad offerings.',
+    icon: Heart,
+  },
+  {
     title: 'Zero Onion Policy',
     subtitle: 'Absolute Allium Exclusion',
     desc: 'Onion in raw, dehydrated, flaked, powder, or extract forms is categorically barred from all supply streams and handling facilities.',
@@ -26,12 +32,6 @@ const standards = [
     subtitle: 'Ahimsa & Root Vegetable Free',
     desc: 'Our Jain-certified selections exclude root vegetables (kandmool) such as potatoes, carrots, and radishes, adhering to strict compassion protocols.',
     icon: CheckCircle2,
-  },
-  {
-    title: 'Vaishnav & Bhoga Purity',
-    subtitle: 'Suitable for Sacred Seva',
-    desc: 'Prepared in clean, sanctified environments by individuals mindful of devotion. Suitable for Thakurji Bhoga and temple prasad offerings.',
-    icon: Heart,
   },
   {
     title: 'Ekadashi Fasting Compliance',

@@ -46,6 +46,8 @@ export interface Product {
   purityInfo?: string
   shippingInfo?: string
   isDemo?: boolean
+  isCombo?: boolean
+  comboItemNames?: string[]
   createdAt: string
   updatedAt: string
 }
@@ -169,6 +171,7 @@ export interface PageSection {
     | 'featured_products'
     | 'purity_story'
     | 'collaboration_cta'
+    | 'combo_showcase'
     | 'custom'
   order: number
   visible: boolean

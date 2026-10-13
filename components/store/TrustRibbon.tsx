@@ -10,6 +10,7 @@ const standards = [
   { label: 'Bhoga Suitable', detail: 'Sanctified Purity' },
   { label: 'Ekadashi Friendly', detail: 'Grain Free' },
   { label: 'Tithi Friendly', detail: 'Fasting Ritual' },
+  { label: 'Pan India Sales', detail: 'Serving All States' },
   { label: 'Zero Contamination', detail: 'Audited Facility' },
 ]
 

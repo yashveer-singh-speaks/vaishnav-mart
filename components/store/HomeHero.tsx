@@ -93,6 +93,10 @@ export const HomeHero: React.FC<HomeHeroProps> = ({
             </div>
             <div className="flex items-center gap-2">
               <span className="text-burgundy font-bold">✓</span>
+              <span>Serving Customers Across India</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-burgundy font-bold">✓</span>
               <span>Bhoga & Ekadashi Compliant</span>
             </div>
           </div>

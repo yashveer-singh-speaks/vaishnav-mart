@@ -51,28 +51,28 @@ export const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/category/jain-foods" className="hover:text-gold transition-colors">
-                  Jain Foods
+                <Link href="/category/blend-masala-seasoning" className="hover:text-gold transition-colors">
+                  Blend Masala & Seasoning
                 </Link>
               </li>
               <li>
-                <Link href="/category/ekadashi-foods" className="hover:text-gold transition-colors">
-                  Ekadashi Foods
+                <Link href="/category/dry-fruits-mix-trails" className="hover:text-gold transition-colors">
+                  Dry Fruits & Mix Trails
                 </Link>
               </li>
               <li>
-                <Link href="/category/vaishnav-foods" className="hover:text-gold transition-colors">
-                  Vaishnav Bhoga
+                <Link href="/category/khakhras" className="hover:text-gold transition-colors">
+                  Khakhras
                 </Link>
               </li>
               <li>
-                <Link href="/category/masalas" className="hover:text-gold transition-colors">
-                  Pure Masalas
+                <Link href="/category/soup-premix" className="hover:text-gold transition-colors">
+                  Soup Premix
                 </Link>
               </li>
               <li>
-                <Link href="/category/dry-fruits" className="hover:text-gold transition-colors">
-                  Dry Fruits & Saffron
+                <Link href="/category/ready-to-eat-premix" className="hover:text-gold transition-colors">
+                  Ready to Eat Premix
                 </Link>
               </li>
             </ul>
