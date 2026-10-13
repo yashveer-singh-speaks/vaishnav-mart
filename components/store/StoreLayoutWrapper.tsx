@@ -3,6 +3,7 @@
 import React from 'react'
 import { usePathname } from 'next/navigation'
 import { AnnouncementBar } from '@/components/store/AnnouncementBar'
+import { HareKrishnaTicker } from '@/components/store/HareKrishnaTicker'
 import { Header } from '@/components/store/Header'
 import { Footer } from '@/components/store/Footer'
 import { CartDrawer } from '@/components/store/CartDrawer'
@@ -23,6 +24,7 @@ export const StoreLayoutWrapper: React.FC<{ children: React.ReactNode }> = ({ ch
     <div className="flex flex-col min-h-screen bg-ivory">
       <AnnouncementBar />
       <Header />
+      <HareKrishnaTicker />
       <main className="flex-1">{children}</main>
       <Footer />
 

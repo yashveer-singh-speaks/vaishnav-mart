@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Cormorant_Garamond, Manrope } from 'next/font/google'
+import { Cormorant_Garamond, Manrope, Rozha_One } from 'next/font/google'
 import './globals.css'
 import { AuthProvider } from '@/lib/auth/AuthContext'
 import { CartProvider } from '@/lib/data/CartContext'
@@ -20,13 +20,20 @@ const manrope = Manrope({
   display: 'swap',
 })
 
+const rozhaOne = Rozha_One({
+  subsets: ['devanagari', 'latin'],
+  variable: '--font-devanagari',
+  weight: ['400'],
+  display: 'swap',
+})
+
 export const metadata: Metadata = {
   title: 'Vaishnava Mart | Pure Satvik, Jain & Vaishnav Food Products',
   description:
     'Dedicated culinary purity for Jain, Vaishnav, and devout Satvik homes. 100% free from onion, garlic, and contamination. Cold-ground whole spices, fasting staples, and royal dry fruits.',
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://vaishnavamart.com'),
   openGraph: {
-    title: 'Vaishnava Mart | Purity You Never Have to Question',
+    title: 'Vaishnava Mart | Divine Satvik Purity',
     description: 'Devotional Satvik and Jain food essentials prepared under dedicated zero-contamination standards.',
     images: ['/images/generated/hero-bg.jpg'],
     locale: 'en_IN',
@@ -40,7 +47,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${cormorant.variable} ${manrope.variable}`}>
+    <html lang="en" className={`${cormorant.variable} ${manrope.variable} ${rozhaOne.variable}`}>
       <body className="bg-ivory text-cocoa antialiased selection:bg-gold/20 selection:text-burgundy">
         <AuthProvider>
           <CartProvider>

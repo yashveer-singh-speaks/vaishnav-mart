@@ -13,28 +13,44 @@ interface BrandStoryProps {
 }
 
 export const BrandStorySection: React.FC<BrandStoryProps> = ({
-  heading = 'Why Vaishnava Mart exists',
-  subheading = 'PURITY IN PURPOSE',
-  body = 'In an era of industrial speed and hidden fillers, devout households spend countless hours scrutinising labels for hidden onion, garlic powder, or shared processing lines. Vaishnava Mart was established to restore absolute trust in the pantry. Every spice, flour, and delicacy is prepared in an uncompromised sanctuary of purity.',
+  heading = 'Why Devotees Choose Rasikan',
+  subheading = 'SPIRITUAL PURPOSE & SATTVIC VALUES',
+  body,
   image = '/images/generated/story-why-exists.jpg',
 }) => {
   return (
     <section className="py-20 sm:py-28 bg-cream border-b border-sand/70 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-          {/* Text Column (approx 45%) */}
-          <div className="lg:col-span-5 order-2 lg:order-1 space-y-6">
+          {/* Text Column (approx 50%) */}
+          <div className="lg:col-span-6 order-2 lg:order-1 space-y-5">
             <span className="text-xs uppercase tracking-widest text-copper font-semibold">
               {subheading}
             </span>
             <h2 className="font-serif text-3xl sm:text-5xl text-cocoa leading-tight font-normal">
               {heading}
             </h2>
-            <p className="text-base text-taupe leading-relaxed font-sans">
-              {body}
-            </p>
 
-            <div className="pt-2 space-y-3 text-sm text-cocoa">
+            {/* Divided Readable Paragraphs */}
+            <div className="space-y-4 text-sm sm:text-base text-taupe leading-relaxed font-sans pt-1">
+              <p>
+                For a true Bhakti Yogi or anyone seeking spiritual clarity, what you eat directly influences how you think. Scriptural and Ayurvedic traditions teach that onion and garlic possess Rajasic and Tamasic qualities, which can disturb consciousness and interfere with deep meditation.
+              </p>
+              <p className="font-medium text-cocoa/90">
+                True Sattvic food should elevate the soul and be suitable for offering to the Lord.
+              </p>
+              <p>
+                Rasikan Spices bridges the gap for modern devotees by offering small batch, purely handmade masalas that are exceptionally clean and carefully prepared. Unlike ordinary brands that process mixed ingredients, our masalas are produced in a 100% dedicated facility that strictly excludes onion and garlic.
+              </p>
+              <p>
+                We use absolutely no artificial preservatives, colours, or fillers, ensuring that every spice blend remains entirely Sattvic and follows Vedic principles. We source clean, natural ingredients so devotees can confidently prepare daily Bhog, Vrat meals, and temple offerings.
+              </p>
+              <p className="text-burgundy font-serif italic text-base sm:text-lg">
+                Our goal is to help transform your everyday kitchen into a place of devotion without sacrificing the rich, traditional aromas of authentic Indian spices.
+              </p>
+            </div>
+
+            <div className="pt-2 space-y-2.5 text-xs sm:text-sm text-cocoa">
               <div className="flex items-center gap-3">
                 <ShieldCheck className="w-5 h-5 text-burgundy flex-shrink-0" />
                 <span>Zero cross-contamination with allium or non-satvik ingredients</span>
@@ -53,8 +69,8 @@ export const BrandStorySection: React.FC<BrandStoryProps> = ({
             </div>
           </div>
 
-          {/* Image Column (approx 55%) - 16:9 safe composition */}
-          <div className="lg:col-span-7 order-1 lg:order-2">
+          {/* Image Column (approx 50%) - 16:9 safe composition */}
+          <div className="lg:col-span-6 order-1 lg:order-2">
             <div className="relative aspect-[16/9] w-full rounded-2xl overflow-hidden shadow-xl border border-sand">
               <Image
                 src={image}

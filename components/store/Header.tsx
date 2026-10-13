@@ -20,6 +20,8 @@ import { useAuth } from '@/lib/auth/AuthContext'
 import { SearchModal } from './SearchModal'
 import { Category } from '@/types'
 import { CategoryRepository } from '@/lib/data/repositories'
+import { VaishnavaTilak } from './VaishnavaTilak'
+import { TulsiPlant } from './TulsiPlant'
 
 export const Header: React.FC = () => {
   const pathname = usePathname()
@@ -77,24 +79,37 @@ export const Header: React.FC = () => {
             </button>
           </div>
 
-          {/* DESKTOP LEFT / MOBILE CENTRE: LOGO */}
+          {/* DESKTOP LEFT / MOBILE CENTRE: BRANDING WITH TULSI & VAISHNAVA TILAK */}
           <div className="flex items-center">
-            <Link href="/" className="relative block transition-all duration-300">
+            <Link
+              href="/"
+              className="group flex items-center gap-2 sm:gap-3 py-1 transition-all duration-300"
+              aria-label="Vaishnava Mart Home"
+            >
+              {/* Sacred Tulsi Plant on the left */}
               <div
-                className={`relative transition-all duration-300 ${
-                  scrolled
-                    ? 'w-[145px] sm:w-[170px] h-[48px]'
-                    : 'w-[160px] sm:w-[200px] h-[56px]'
-                }`}
+                className="flex items-center justify-center transition-transform duration-300 group-hover:scale-105 flex-shrink-0"
+                title="Holy Basil (Tulsi)"
               >
-                <Image
-                  src="/images/logo/logo.jpg"
-                  alt="Vaishnava Mart"
-                  fill
-                  priority
-                  sizes="(max-width: 640px) 160px, 200px"
-                  className="object-contain object-left"
-                />
+                <TulsiPlant className={scrolled ? 'w-8 h-8 sm:w-9 sm:h-9' : 'w-9 h-9 sm:w-11 sm:h-11'} />
+              </div>
+
+              {/* Sacred Vaishnava Tilak Symbol */}
+              <div
+                className="flex items-center justify-center transition-transform duration-300 group-hover:scale-105 flex-shrink-0"
+                title="Vaishnava Tilak"
+              >
+                <VaishnavaTilak className={scrolled ? 'w-5 h-7 sm:w-6 sm:h-8' : 'w-6 h-8 sm:w-7 sm:h-9'} />
+              </div>
+
+              {/* Brand Typography */}
+              <div className="flex flex-col text-left leading-none">
+                <span className="font-serif text-xl sm:text-2xl lg:text-[27px] font-bold text-burgundy tracking-tight transition-colors duration-200 group-hover:text-burgundy-dark">
+                  Vaishnava Mart
+                </span>
+                <span className="text-[9px] sm:text-[10.5px] uppercase tracking-[0.22em] font-sans text-copper font-semibold mt-0.5 sm:mt-1">
+                  Pure • Satvik • Devotional
+                </span>
               </div>
             </Link>
           </div>
@@ -239,16 +254,19 @@ export const Header: React.FC = () => {
           {/* Drawer 92% width */}
           <div className="relative z-10 w-[92%] max-w-sm h-full bg-porcelain shadow-2xl flex flex-col border-r border-sand overflow-y-auto">
             {/* Top Bar */}
-            <div className="p-5 border-b border-sand flex items-center justify-between bg-ivory">
-              <div className="relative w-36 h-10">
-                <Image
-                  src="/images/logo/logo.jpg"
-                  alt="Vaishnava Mart"
-                  fill
-                  sizes="144px"
-                  className="object-contain"
-                />
-              </div>
+            <div className="p-4 border-b border-sand flex items-center justify-between bg-ivory">
+              <Link
+                href="/"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center gap-2"
+              >
+                <TulsiPlant className="w-7 h-7 flex-shrink-0" />
+                <VaishnavaTilak className="w-4 h-6 flex-shrink-0" />
+                <div className="flex flex-col text-left leading-none">
+                  <span className="font-serif text-lg font-bold text-burgundy">Vaishnava Mart</span>
+                  <span className="text-[9px] uppercase tracking-widest text-copper font-sans">Satvik Food</span>
+                </div>
+              </Link>
               <button
                 onClick={() => setMobileMenuOpen(false)}
                 className="p-2 text-taupe hover:text-burgundy rounded-full"

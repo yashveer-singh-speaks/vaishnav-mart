@@ -138,6 +138,19 @@ html, body {
   animation-play-state: paused;
 }
 
+/* Hare Krishna Continuous Mantra Ticker */
+@keyframes mantra-scroll {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-mantra-ticker {
+  display: flex;
+  width: max-content;
+  animation: mantra-scroll 28s linear infinite;
+  will-change: transform;
+}
+
 /* Accessibility: Reduced motion overrides */
 @media (prefers-reduced-motion: reduce) {
   * {
@@ -147,7 +160,8 @@ html, body {
     scroll-behavior: auto !important;
   }
   .animate-marquee,
-  .animate-marquee-reverse {
+  .animate-marquee-reverse,
+  .animate-mantra-ticker {
     animation: none !important;
     transform: none !important;
   }

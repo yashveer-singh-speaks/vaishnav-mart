@@ -5,6 +5,8 @@ import Link from 'next/link'
 import Image from 'next/image'
 import dynamic from 'next/dynamic'
 import { ShieldCheck, Heart, MapPin, Phone, Mail } from 'lucide-react'
+import { VaishnavaTilak } from './VaishnavaTilak'
+import { TulsiPlant } from './TulsiPlant'
 
 // Lazy load Three.js Medallion with clean fallback
 const FooterMedallion = dynamic(
@@ -20,15 +22,16 @@ export const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-14 border-b border-ivory/10">
           {/* Brand & Philosophy Column */}
           <div className="lg:col-span-2 space-y-4">
-            <div className="relative w-44 h-14 bg-porcelain/95 p-2 rounded-lg">
-              <Image
-                src="/images/logo/logo.jpg"
-                alt="Vaishnava Mart"
-                fill
-                sizes="176px"
-                className="object-contain p-1"
-              />
-            </div>
+            <Link href="/" className="inline-flex items-center gap-2.5">
+              <TulsiPlant className="w-9 h-9" />
+              <VaishnavaTilak className="w-5 h-7" />
+              <div className="flex flex-col text-left leading-none">
+                <span className="font-serif text-2xl font-bold text-ivory">Vaishnava Mart</span>
+                <span className="text-[10px] uppercase tracking-[0.2em] font-sans text-gold font-semibold mt-1">
+                  Pure • Satvik • Devotional
+                </span>
+              </div>
+            </Link>
             <p className="text-sm text-ivory/70 leading-relaxed max-w-sm font-sans pt-1">
               Vaishnava Mart represents an uncompromised commitment to devotional culinary purity. Every spice, flour, and grain is ground in dedicated allium-free chambers for Jain, Vaishnav, and devout households.
             </p>
@@ -148,7 +151,7 @@ export const Footer: React.FC = () => {
         {/* Absolute Bottom Row */}
         <div className="pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-ivory/60 gap-4">
           <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-6 text-center sm:text-left">
-            <span>© {new Date().getFullYear()} Vaishnava Mart. Purity you never have to question.</span>
+            <span>© {new Date().getFullYear()} Vaishnava Mart. Divine Satvik culinary purity.</span>
             <span>FSSAI Lic. No. 10023011000987</span>
           </div>
 

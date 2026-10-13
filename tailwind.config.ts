@@ -58,6 +58,7 @@ const config: Config = {
       fontFamily: {
         serif: ['var(--font-cormorant)', 'Georgia', 'serif'],
         sans: ['var(--font-manrope)', 'system-ui', 'sans-serif'],
+        devanagari: ['var(--font-devanagari)', 'serif'],
       },
       borderRadius: {
         brand: '14px',
