@@ -26,42 +26,45 @@ export const HomeHero: React.FC<HomeHeroProps> = ({
 
   return (
     <section className="relative w-full min-h-[90vh] lg:min-h-[96vh] flex items-center overflow-hidden bg-ivory">
-      {/* Hero Visuals: Left Masala Image & Right Sacred Tulsi Pot */}
-      <div className="absolute inset-0 z-0 overflow-hidden">
-        {/* Left Side: Masala & Spices Background */}
-        <div className="absolute top-0 left-0 w-full lg:w-1/2 h-full z-0 overflow-hidden">
+      {/* Background Visuals: Left (Tulsi Pot) & Right (Masala / Spices) */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        {/* LEFT IMAGE: Sacred Tulsi Pot with fading right and top/bottom gradients */}
+        <div className="absolute top-0 left-0 w-full sm:w-1/2 lg:w-5/12 h-full overflow-hidden opacity-30 sm:opacity-40 lg:opacity-75">
+          <Image
+            src="/images/tulsi-pot-hero.jpg"
+            alt="Sacred Holy Tulsi Plant - Vaishnava Mart"
+            fill
+            priority
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 42vw"
+            className="object-cover object-center lg:object-left-top"
+          />
+          {/* Fading gradients from left/top/bottom towards center to preserve text clarity */}
+          <div className="absolute inset-0 bg-gradient-to-r from-ivory/50 via-ivory/85 to-ivory" />
+          <div className="absolute inset-0 bg-gradient-to-t from-ivory via-transparent to-ivory/40" />
+        </div>
+
+        {/* RIGHT IMAGE: Authentic Masala & Whole Spices with soft leftward fade */}
+        <div className="absolute top-0 right-0 w-full sm:w-1/2 lg:w-7/12 h-full overflow-hidden">
           <Image
             src={image}
             alt="Vaishnava Mart Pure Spices and Satvik Ingredients"
             fill
             priority
-            sizes="(max-width: 1024px) 100vw, 50vw"
-            className="object-cover object-left opacity-35 lg:opacity-40"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 58vw"
+            className="object-cover object-center lg:object-right scale-100 transition-transform duration-1000 ease-out"
           />
-          {/* Subtle ivory fades so the left text is clearly legible */}
-          <div className="absolute inset-0 bg-gradient-to-r from-ivory/95 via-ivory/85 to-ivory/60 lg:to-ivory/40" />
-          <div className="absolute inset-0 bg-gradient-to-t from-ivory via-transparent to-ivory/40" />
+          {/* Smooth ivory wash fading towards the content center */}
+          <div className="absolute inset-0 bg-gradient-to-r from-ivory via-ivory/70 to-transparent sm:via-ivory/60 sm:to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-ivory/80 via-transparent to-ivory/30 lg:hidden" />
         </div>
 
-        {/* Right Side: Sacred Tulsi Pot Image */}
-        <div className="absolute top-0 right-0 w-full sm:w-2/3 lg:w-1/2 h-full z-0 overflow-hidden">
-          <Image
-            src="/images/tulsi-pot-hero.jpg"
-            alt="Sacred Holy Tulsi Pot - Vaishnava Mart"
-            fill
-            sizes="(max-width: 1024px) 66vw, 50vw"
-            className="object-cover object-center lg:object-right opacity-85 lg:opacity-95"
-          />
-          {/* Fading ivory gradients on the edges of the Tulsi pot */}
-          <div className="absolute inset-0 bg-gradient-to-r from-ivory via-ivory/40 to-transparent lg:from-ivory lg:via-transparent lg:to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-t from-ivory via-transparent to-ivory/30" />
-          <div className="absolute inset-0 bg-gradient-to-b from-ivory/30 via-transparent to-ivory" />
-        </div>
+        {/* Central Ambient Blend */}
+        <div className="absolute inset-0 bg-radial from-transparent via-ivory/40 to-ivory/70 pointer-events-none" />
       </div>
 
-      {/* Content Container */}
+      {/* Content Container (Centered between the two visuals) */}
       <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-8 py-16 sm:py-24 w-full">
-        <div className="max-w-2xl lg:max-w-3xl">
+        <div className="max-w-2xl lg:max-w-3xl backdrop-blur-[2px] sm:backdrop-blur-none bg-ivory/40 sm:bg-transparent p-4 sm:p-0 rounded-3xl">
           {/* Eyebrow */}
           <div className="inline-flex items-center gap-2 px-3 py-1 bg-porcelain/90 border border-sand rounded-full text-burgundy text-[11px] sm:text-xs font-bold tracking-widest uppercase mb-6 shadow-sm">
             <span className="w-1.5 h-1.5 rounded-full bg-gold" />
