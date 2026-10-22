@@ -35,7 +35,7 @@ export default function PrivacyPolicyPage() {
         <section className="space-y-3">
           <h2 className="font-serif text-2xl text-cocoa">4. Contact For Privacy Queries</h2>
           <p className="text-sm">
-            For questions regarding personal data access or erasure, please contact our Data Protection Officer at care@vaishnavamart.com.
+            For questions regarding personal data access or erasure, please contact our Data Protection Officer at nimaitrade55@gmail.com.
           </p>
         </section>
       </div>

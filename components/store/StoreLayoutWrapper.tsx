@@ -9,6 +9,7 @@ import { Footer } from '@/components/store/Footer'
 import { CartDrawer } from '@/components/store/CartDrawer'
 import { LoginModal } from '@/components/store/LoginModal'
 import { ProfileCompletionModal } from '@/components/store/ProfileCompletionModal'
+import { FloatingWhatsApp } from '@/components/store/FloatingWhatsApp'
 import { useCart } from '@/lib/data/CartContext'
 
 export const StoreLayoutWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -32,6 +33,9 @@ export const StoreLayoutWrapper: React.FC<{ children: React.ReactNode }> = ({ ch
       <CartDrawer />
       <LoginModal />
       <ProfileCompletionModal />
+
+      {/* Floating WhatsApp Badge on every page */}
+      <FloatingWhatsApp phoneNumber="8595268400" />
 
       {/* Floating Toast Message */}
       {toastMessage && (

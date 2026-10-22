@@ -13,7 +13,7 @@ interface BrandStoryProps {
 }
 
 export const BrandStorySection: React.FC<BrandStoryProps> = ({
-  heading = 'Why Devotees Choose Rasikan',
+  heading = 'Why Devotees Choose Ras Kan',
   subheading = 'SPIRITUAL PURPOSE & SATTVIC VALUES',
   body,
   image = '/images/generated/story-why-exists.jpg',
@@ -40,7 +40,7 @@ export const BrandStorySection: React.FC<BrandStoryProps> = ({
                 True Sattvic food should elevate the soul and be suitable for offering to the Lord.
               </p>
               <p>
-                Rasikan Spices bridges the gap for modern devotees by offering small batch, purely handmade masalas that are exceptionally clean and carefully prepared. Unlike ordinary brands that process mixed ingredients, our masalas are produced in a 100% dedicated facility that strictly excludes onion and garlic.
+                Ras Kan Spices bridges the gap for modern devotees by offering small batch, purely handmade masalas that are exceptionally clean and carefully prepared. Unlike ordinary brands that process mixed ingredients, our masalas are produced in a 100% dedicated facility that strictly excludes onion and garlic.
               </p>
               <p>
                 We use absolutely no artificial preservatives, colours, or fillers, ensuring that every spice blend remains entirely Sattvic and follows Vedic principles. We source clean, natural ingredients so devotees can confidently prepare daily Bhog, Vrat meals, and temple offerings.

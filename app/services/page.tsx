@@ -65,7 +65,7 @@ export default function ServicesPage() {
           </p>
           <div className="pt-2">
             <Link
-              href="https://wa.me/919876543210"
+              href="https://wa.me/918595268400"
               target="_blank"
               className="btn-primary inline-flex text-xs h-11 px-7"
             >

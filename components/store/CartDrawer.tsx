@@ -65,7 +65,7 @@ export const CartDrawer: React.FC = () => {
           {subtotal >= 499 ? (
             <span className="text-botanical font-medium">✓ You unlocked complimentary free shipping!</span>
           ) : (
-            <span>Add ₹{499 - subtotal} more for free delivery</span>
+            <span>Add ₹{499 - subtotal} more for Free Pan India Delivery</span>
           )}
           <span className="font-mono text-[10px]">Min ₹499</span>
         </div>

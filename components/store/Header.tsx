@@ -183,6 +183,24 @@ export const Header: React.FC = () => {
             </Link>
 
             <Link
+              href="/blog"
+              className={`hover:text-burgundy transition-colors ${
+                pathname === '/blog' ? 'text-burgundy font-semibold' : ''
+              }`}
+            >
+              Blog
+            </Link>
+
+            <Link
+              href="/social"
+              className={`hover:text-burgundy transition-colors ${
+                pathname === '/social' ? 'text-burgundy font-semibold' : ''
+              }`}
+            >
+              Social
+            </Link>
+
+            <Link
               href="/contact"
               className={`hover:text-burgundy transition-colors ${
                 pathname === '/contact' ? 'text-burgundy font-semibold' : ''
@@ -355,6 +373,22 @@ export const Header: React.FC = () => {
                   className="block py-2 hover:text-burgundy font-medium text-copper"
                 >
                   Vaishnav Calendar
+                </Link>
+
+                <Link
+                  href="/blog"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block py-2 hover:text-burgundy"
+                >
+                  Blog
+                </Link>
+
+                <Link
+                  href="/social"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block py-2 hover:text-burgundy"
+                >
+                  Social
                 </Link>
 
                 <Link

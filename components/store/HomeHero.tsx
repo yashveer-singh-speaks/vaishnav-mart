@@ -36,9 +36,24 @@ export const HomeHero: React.FC<HomeHeroProps> = ({
           sizes="100vw"
           className="object-cover object-center lg:object-right scale-100 transition-transform duration-1000 ease-out"
         />
+
+        {/* Sacred Tulsi Pot on right side complementing the masala imagery with soft fading gradient */}
+        <div className="absolute top-0 right-0 w-full sm:w-2/3 lg:w-1/2 h-full z-1 pointer-events-none overflow-hidden opacity-90 mix-blend-multiply sm:mix-blend-normal">
+          <Image
+            src="/images/tulsi-pot-hero.jpg"
+            alt="Sacred Holy Tulsi Pot - Vaishnava Mart"
+            fill
+            sizes="(max-width: 1024px) 66vw, 50vw"
+            className="object-cover object-center"
+          />
+          {/* Fading gradient overlays matching background seamlessly */}
+          <div className="absolute inset-0 bg-gradient-to-r from-ivory via-ivory/60 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-ivory via-transparent to-ivory/40" />
+        </div>
+
         {/* Editorial Ivory Gradient Overlay ensuring generous negative space on left */}
-        <div className="absolute inset-0 bg-gradient-to-r from-ivory via-ivory/90 to-transparent sm:via-ivory/80 sm:to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-ivory/70 via-transparent to-ivory/30 lg:hidden" />
+        <div className="absolute inset-0 bg-gradient-to-r from-ivory via-ivory/95 to-transparent sm:via-ivory/85 sm:to-transparent z-2" />
+        <div className="absolute inset-0 bg-gradient-to-t from-ivory/80 via-transparent to-ivory/30 lg:hidden z-2" />
       </div>
 
       {/* Content Container */}

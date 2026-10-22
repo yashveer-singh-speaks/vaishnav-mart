@@ -71,8 +71,8 @@ export const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/category/ready-to-eat-premix" className="hover:text-gold transition-colors">
-                  Ready to Eat Premix
+                <Link href="/category/milk-premix" className="hover:text-gold transition-colors">
+                  Milk Premix
                 </Link>
               </li>
             </ul>
@@ -135,12 +135,44 @@ export const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="hover:text-gold transition-colors">
-                  Contact Us
-                </Link>
+                <Link href="/blog" className="hover:text-gold transition-colors">Satvik Journal & Blog</Link>
+              </li>
+              <li>
+                <Link href="/social" className="hover:text-gold transition-colors">Social Channels</Link>
+              </li>
+              <li>
+                <Link href="/contact" className="hover:text-gold transition-colors">Contact Us</Link>
               </li>
             </ul>
           </div>
+        </div>
+
+        
+        {/* Mid Centre Golden Site Attribution */}
+        <div className="py-6 text-center border-t border-ivory/10">
+          <p className="text-xs sm:text-sm text-gold font-medium tracking-wide">
+            Site built by{' '}
+            <Link
+              href="/yashveer-singh-rajpoot"
+              className="text-gold underline hover:text-ivory font-semibold transition-colors decoration-gold/60 underline-offset-4"
+            >
+              Yashveer Singh Rajpoot
+            </Link>
+            , the Founder of{' '}
+            <Link
+              href="/yashveer-labs"
+              className="text-gold underline hover:text-ivory font-semibold transition-colors decoration-gold/60 underline-offset-4"
+            >
+              Yashveer Labs
+            </Link>{' '}
+            and{' '}
+            <Link
+              href="/rajpoot-industries"
+              className="text-gold underline hover:text-ivory font-semibold transition-colors decoration-gold/60 underline-offset-4"
+            >
+              Rajpoot Industries
+            </Link>
+          </p>
         </div>
 
         {/* Middle Seal row */}
@@ -157,7 +189,7 @@ export const Footer: React.FC = () => {
 
           <div className="flex items-center gap-5">
             <Link
-              href="https://instagram.com/vaishnavamart"
+              href="https://www.instagram.com/raskanspices?rpxt=MWtmMTUyMmdkM2MxeA%3D%3D&utm_source=qr"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-gold transition-colors"
@@ -165,7 +197,7 @@ export const Footer: React.FC = () => {
               Instagram
             </Link>
             <Link
-              href="https://wa.me/919876543210"
+              href="https://wa.me/918595268400"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-gold transition-colors"

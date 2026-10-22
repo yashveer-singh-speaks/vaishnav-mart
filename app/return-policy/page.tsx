@@ -89,14 +89,14 @@ export default function ReturnPolicyPage() {
                   <PhoneCall className="w-4 h-4" />
                   <span>WhatsApp Care</span>
                 </div>
-                <p className="text-xs text-taupe">+91 98765 43210 (Mon–Sat, 9 AM – 7 PM)</p>
+                <p className="text-xs text-taupe">+91 85952 68400 (Mon–Sat, 9 AM – 7 PM)</p>
               </div>
               <div className="p-4 bg-porcelain rounded-xl border border-sand">
                 <div className="flex items-center gap-2 text-burgundy font-semibold text-sm mb-1">
                   <Mail className="w-4 h-4" />
                   <span>Email Care</span>
                 </div>
-                <p className="text-xs text-taupe">care@vaishnavamart.com</p>
+                <p className="text-xs text-taupe">nimaitrade55@gmail.com</p>
               </div>
             </div>
           </section>

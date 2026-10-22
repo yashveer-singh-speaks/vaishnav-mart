@@ -50,11 +50,12 @@ export default function ContactPage() {
                   <MapPin className="w-5 h-5" />
                 </div>
                 <div>
-                  <p className="font-semibold text-cocoa text-sm">Registered Facility Location</p>
+                  <p className="font-semibold text-cocoa text-sm">Company & Operations</p>
+                  <p className="text-xs font-semibold text-burgundy mt-0.5">NIMAI TRADE</p>
                   <p className="text-xs leading-relaxed mt-1">
-                    Keshopur & Vikaspuri Hub, West Delhi, Delhi 110018, India
+                    23/76 Tilak Nagar, New Delhi 110018, India
                   </p>
-                  <p className="text-[11px] font-mono text-copper mt-1">Coordinates: 28.637821° N, 77.092232° E</p>
+                  <p className="text-[11px] text-copper mt-1">Vaishnava Mart • Ras Kan Foods</p>
                 </div>
               </div>
 
@@ -64,7 +65,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <p className="font-semibold text-cocoa text-sm">Customer Helpline</p>
-                  <p className="text-xs mt-1">+91 98765 43210 (10 AM - 7 PM IST)</p>
+                  <p className="text-xs mt-1">+91 85952 68400 (10 AM - 7 PM IST)</p>
                 </div>
               </div>
 
@@ -74,7 +75,14 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <p className="font-semibold text-cocoa text-sm">Official Correspondence</p>
-                  <p className="text-xs mt-1">care@vaishnavamart.com</p>
+                  <p className="text-xs mt-1">
+                    <a href="mailto:nimaitrade55@gmail.com" className="hover:text-burgundy transition-colors block">
+                      nimaitrade55@gmail.com
+                    </a>
+                    <a href="mailto:raskanfood@gmail.com" className="hover:text-burgundy transition-colors block mt-0.5">
+                      raskanfood@gmail.com
+                    </a>
+                  </p>
                 </div>
               </div>
             </div>
@@ -89,12 +97,12 @@ export default function ContactPage() {
                 Need quick advice on an upcoming Ekadashi feast or prasad order? Chat live with our Satvik coordinator.
               </p>
               <a
-                href="https://wa.me/919876543210"
+                href="https://wa.me/918595268400"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-primary w-full h-11 text-xs justify-center"
               >
-                <span>Open WhatsApp Chat</span>
+                <span>Open WhatsApp Chat (+91 85952 68400)</span>
                 <ArrowRight className="w-4 h-4" />
               </a>
             </div>
