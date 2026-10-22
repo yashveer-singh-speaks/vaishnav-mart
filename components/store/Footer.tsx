@@ -147,34 +147,6 @@ export const Footer: React.FC = () => {
           </div>
         </div>
 
-        
-        {/* Mid Centre Golden Site Attribution */}
-        <div className="py-6 text-center border-t border-ivory/10">
-          <p className="text-xs sm:text-sm text-gold font-medium tracking-wide">
-            Site built by{' '}
-            <Link
-              href="/yashveer-singh-rajpoot"
-              className="text-gold underline hover:text-ivory font-semibold transition-colors decoration-gold/60 underline-offset-4"
-            >
-              Yashveer Singh Rajpoot
-            </Link>
-            , the Founder of{' '}
-            <Link
-              href="/yashveer-labs"
-              className="text-gold underline hover:text-ivory font-semibold transition-colors decoration-gold/60 underline-offset-4"
-            >
-              Yashveer Labs
-            </Link>{' '}
-            and{' '}
-            <Link
-              href="/rajpoot-industries"
-              className="text-gold underline hover:text-ivory font-semibold transition-colors decoration-gold/60 underline-offset-4"
-            >
-              Rajpoot Industries
-            </Link>
-          </p>
-        </div>
-
         {/* Middle Seal row */}
         <div className="py-6 flex flex-col items-center justify-center border-b border-ivory/10">
           <FooterMedallion />
@@ -216,6 +188,33 @@ export const Footer: React.FC = () => {
             </Link>
           </div>
         </div>
+      </div>
+    
+      {/* Discreet Bottom-most Site Attribution */}
+      <div className="mt-8 pt-4 pb-2 border-t border-black/20 text-center">
+        <p className="text-[11px] sm:text-xs text-ivory/35 tracking-wide font-sans">
+          Site built by{' '}
+          <Link
+            href="/yashveer-singh-rajpoot"
+            className="text-ivory/45 hover:text-ivory/70 transition-colors underline decoration-ivory/25 underline-offset-2"
+          >
+            Yashveer Singh Rajpoot
+          </Link>
+          , the Founder of{' '}
+          <Link
+            href="/yashveer-labs"
+            className="text-ivory/45 hover:text-ivory/70 transition-colors underline decoration-ivory/25 underline-offset-2"
+          >
+            Yashveer Labs
+          </Link>{' '}
+          and{' '}
+          <Link
+            href="/rajpoot-industries"
+            className="text-ivory/45 hover:text-ivory/70 transition-colors underline decoration-ivory/25 underline-offset-2"
+          >
+            Rajpoot Industries
+          </Link>
+        </p>
       </div>
     </footer>
   )
