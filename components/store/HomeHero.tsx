@@ -26,34 +26,37 @@ export const HomeHero: React.FC<HomeHeroProps> = ({
 
   return (
     <section className="relative w-full min-h-[90vh] lg:min-h-[96vh] flex items-center overflow-hidden bg-ivory">
-      {/* 16:9 Background Visual with Subtle Scale In */}
-      <div className="absolute inset-0 z-0">
-        <Image
-          src={image}
-          alt="Vaishnava Mart Pure Spices and Satvik Ingredients"
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-center lg:object-right scale-100 transition-transform duration-1000 ease-out"
-        />
+      {/* Hero Visuals: Left Masala Image & Right Sacred Tulsi Pot */}
+      <div className="absolute inset-0 z-0 overflow-hidden">
+        {/* Left Side: Masala & Spices Background */}
+        <div className="absolute top-0 left-0 w-full lg:w-1/2 h-full z-0 overflow-hidden">
+          <Image
+            src={image}
+            alt="Vaishnava Mart Pure Spices and Satvik Ingredients"
+            fill
+            priority
+            sizes="(max-width: 1024px) 100vw, 50vw"
+            className="object-cover object-left opacity-35 lg:opacity-40"
+          />
+          {/* Subtle ivory fades so the left text is clearly legible */}
+          <div className="absolute inset-0 bg-gradient-to-r from-ivory/95 via-ivory/85 to-ivory/60 lg:to-ivory/40" />
+          <div className="absolute inset-0 bg-gradient-to-t from-ivory via-transparent to-ivory/40" />
+        </div>
 
-        {/* Sacred Tulsi Pot on right side complementing the masala imagery with soft fading gradient */}
-        <div className="absolute top-0 right-0 w-full sm:w-2/3 lg:w-1/2 h-full z-1 pointer-events-none overflow-hidden opacity-90 mix-blend-multiply sm:mix-blend-normal">
+        {/* Right Side: Sacred Tulsi Pot Image */}
+        <div className="absolute top-0 right-0 w-full sm:w-2/3 lg:w-1/2 h-full z-0 overflow-hidden">
           <Image
             src="/images/tulsi-pot-hero.jpg"
             alt="Sacred Holy Tulsi Pot - Vaishnava Mart"
             fill
             sizes="(max-width: 1024px) 66vw, 50vw"
-            className="object-cover object-center"
+            className="object-cover object-center lg:object-right opacity-85 lg:opacity-95"
           />
-          {/* Fading gradient overlays matching background seamlessly */}
-          <div className="absolute inset-0 bg-gradient-to-r from-ivory via-ivory/60 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-t from-ivory via-transparent to-ivory/40" />
+          {/* Fading ivory gradients on the edges of the Tulsi pot */}
+          <div className="absolute inset-0 bg-gradient-to-r from-ivory via-ivory/40 to-transparent lg:from-ivory lg:via-transparent lg:to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-ivory via-transparent to-ivory/30" />
+          <div className="absolute inset-0 bg-gradient-to-b from-ivory/30 via-transparent to-ivory" />
         </div>
-
-        {/* Editorial Ivory Gradient Overlay ensuring generous negative space on left */}
-        <div className="absolute inset-0 bg-gradient-to-r from-ivory via-ivory/95 to-transparent sm:via-ivory/85 sm:to-transparent z-2" />
-        <div className="absolute inset-0 bg-gradient-to-t from-ivory/80 via-transparent to-ivory/30 lg:hidden z-2" />
       </div>
 
       {/* Content Container */}
