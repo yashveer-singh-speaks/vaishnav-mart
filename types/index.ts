@@ -176,6 +176,7 @@ export interface PageSection {
   type:
     | 'hero'
     | 'trust_ribbon'
+    | 'shop_by_category'
     | 'top_products'
     | 'brand_story'
     | 'most_ordered'

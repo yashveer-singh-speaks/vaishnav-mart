@@ -1,7 +1,8 @@
 import { Metadata } from 'next'
-import { PageRepository, ProductRepository } from '@/lib/data/repositories'
+import { PageRepository, ProductRepository, CategoryRepository } from '@/lib/data/repositories'
 import { HomeHero } from '@/components/store/HomeHero'
 import { TrustRibbon } from '@/components/store/TrustRibbon'
+import { ShopByCategorySection } from '@/components/store/ShopByCategorySection'
 import { TopTwoSection } from '@/components/store/TopTwoSection'
 import { BrandStorySection } from '@/components/store/BrandStorySection'
 import { MostOrderedSection } from '@/components/store/MostOrderedSection'
@@ -28,8 +29,11 @@ export default async function HomePage() {
     .filter((s) => s.visible)
     .sort((a, b) => a.order - b.order)
 
-  // Fetch needed product sets
-  const allProducts = await ProductRepository.getAllProducts({ status: 'active' })
+  // Fetch needed product & category sets
+  const [allProducts, allCategories] = await Promise.all([
+    ProductRepository.getAllProducts({ status: 'active' }),
+    CategoryRepository.getAllCategories(),
+  ])
 
   return (
     <div className="flex flex-col w-full">
@@ -47,6 +51,15 @@ export default async function HomePage() {
             )
           case 'trust_ribbon':
             return <TrustRibbon key={sec.id} />
+          case 'shop_by_category':
+            return (
+              <ShopByCategorySection
+                key={sec.id}
+                categories={allCategories}
+                heading={sec.heading}
+                subheading={sec.subheading}
+              />
+            )
           case 'top_products': {
             const topProducts = allProducts.filter((p) =>
               sec.selectedProductIds?.includes(p.id)

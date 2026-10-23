@@ -45,7 +45,7 @@ export const initialCategories: Category[] = [
     name: 'Dry Fruits & Mix Trails',
     slug: 'dry-fruits-mix-trails',
     description: 'Handpicked premium nuts, royal Kashmiri Mongra saffron, and pious fasting trail mixes.',
-    image: '/images/generated/story-origin.jpg',
+    image: '/images/generated/prod-saffron-dryfruit.jpg',
     seoTitle: 'Dry Fruits & Mix Trails | Vaishnava Mart',
     seoDescription: 'Grade-A dry fruits, saffron, and energy mixes suitable for Ekadashi vrat and temple offerings.',
     visible: true,
@@ -81,7 +81,7 @@ export const initialCategories: Category[] = [
     name: 'Milk Premix',
     slug: 'milk-premix',
     description: 'Sacred saffron, almond, and cardamom milk blends designed for vrat days and daily vitality.',
-    image: '/images/generated/story-origin.jpg',
+    image: '/images/generated/prod-saffron-dryfruit.jpg',
     seoTitle: 'Badam Kesar Milk Premix | Vaishnava Mart',
     seoDescription: 'Devotional badam kesar milk blends crafted with natural dry fruits and Kashmiri saffron.',
     visible: true,
@@ -1703,7 +1703,7 @@ export const initialHomeSections: PageContent = {
       button: { visible: true, text: 'Shop Now', url: '/shop' },
       styleSettings: { textAlign: 'left', headingAlign: 'left', imagePosition: 'right' },
     },
-    {
+        {
       id: 'sec-trust-ribbon',
       type: 'trust_ribbon',
       order: 2,
@@ -1716,9 +1716,21 @@ export const initialHomeSections: PageContent = {
       styleSettings: { textAlign: 'center', headingAlign: 'center', imagePosition: 'left' },
     },
     {
+      id: 'sec-shop-by-category',
+      type: 'shop_by_category',
+      order: 3,
+      visible: true,
+      layout: 'layout_1',
+      heading: 'Shop by Category',
+      subheading: 'EXPLORE OUR SATVIK PANTRY',
+      body: 'Pure, authentic culinary essentials crafted with zero onion, garlic, or chemical additives.',
+      background: { type: 'color', value: '#F4EFE6' },
+      styleSettings: { textAlign: 'center', headingAlign: 'center', imagePosition: 'left' },
+    },
+    {
       id: 'sec-top-two',
       type: 'top_products',
-      order: 3,
+      order: 4,
       visible: true,
       layout: 'layout_1',
       heading: 'Chosen for your kitchen',
@@ -1731,7 +1743,7 @@ export const initialHomeSections: PageContent = {
     {
       id: 'sec-brand-story',
       type: 'brand_story',
-      order: 4,
+      order: 5,
       visible: true,
       layout: 'layout_2',
       heading: 'Why Devotees Choose Ras Kan',
@@ -1745,7 +1757,7 @@ export const initialHomeSections: PageContent = {
     {
       id: 'sec-most-ordered',
       type: 'most_ordered',
-      order: 5,
+      order: 6,
       visible: true,
       layout: 'layout_3',
       heading: 'What people keep coming back for',
@@ -1758,7 +1770,7 @@ export const initialHomeSections: PageContent = {
     {
       id: 'sec-founder-story',
       type: 'founder_story',
-      order: 6,
+      order: 7,
       visible: true,
       layout: 'layout_1',
       heading: 'Rooted in timeless tradition',
@@ -1772,7 +1784,7 @@ export const initialHomeSections: PageContent = {
     {
       id: 'sec-featured-six',
       type: 'featured_products',
-      order: 7,
+      order: 8,
       visible: true,
       layout: 'layout_3',
       heading: 'Explore the pantry',
@@ -1785,7 +1797,7 @@ export const initialHomeSections: PageContent = {
     {
       id: 'sec-purity-story',
       type: 'purity_story',
-      order: 8,
+      order: 9,
       visible: true,
       layout: 'layout_2',
       heading: 'Our standard is not a label. It is the process.',
@@ -1798,7 +1810,7 @@ export const initialHomeSections: PageContent = {
     {
       id: 'sec-combos',
       type: 'combo_showcase',
-      order: 9,
+      order: 10,
       visible: true,
       layout: 'layout_1',
       heading: 'Sacred Pantry Combos & Value Bundles',
@@ -1811,7 +1823,7 @@ export const initialHomeSections: PageContent = {
     {
       id: 'sec-collab-cta',
       type: 'collaboration_cta',
-      order: 10,
+      order: 11,
       visible: true,
       layout: 'layout_1',
       heading: 'Have something worth building together?',
