@@ -24,6 +24,13 @@ import {
   initialAuditLogs,
   initialNotifications,
 } from './mockData'
+import {
+  FirestoreProductService,
+  FirestoreCategoryService,
+  FirestorePageService,
+  FirestoreOrderService,
+  FirestoreUserService,
+} from '@/lib/firebase/firestoreService'
 
 // In-Memory Global Mock Store (Server & Client fallback)
 let mockProductsStore: Product[] = [...initialProducts]
@@ -130,25 +137,38 @@ export const ProductRepository = {
 
   async saveProduct(product: Product): Promise<Product> {
     syncFromStorage()
+    let saved: Product
     const index = mockProductsStore.findIndex((p) => p.id === product.id)
     if (index >= 0) {
-      mockProductsStore[index] = { ...product, updatedAt: new Date().toISOString() }
+      saved = { ...product, updatedAt: new Date().toISOString() }
+      mockProductsStore[index] = saved
       await AuditLogRepository.addLog('Product Edited', `Updated product: ${product.name}`, 'Owner')
     } else {
-      mockProductsStore.unshift({ ...product, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() })
+      saved = { ...product, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() }
+      mockProductsStore.unshift(saved)
       await AuditLogRepository.addLog('Product Added', `Added product: ${product.name}`, 'Owner')
     }
     syncToStorage()
-    return product
+
+    // Sync to Firebase Firestore asynchronously
+    FirestoreProductService.save(saved).catch((err) => {
+      console.warn('Firebase product save notice:', err)
+    })
+
+    return saved
   },
 
   async deleteProduct(id: string, soft = true): Promise<void> {
     syncFromStorage()
     const prod = mockProductsStore.find((p) => p.id === id)
     if (soft) {
-      if (prod) prod.status = 'hidden'
+      if (prod) {
+        prod.status = 'hidden'
+        FirestoreProductService.save(prod).catch(() => {})
+      }
     } else {
       mockProductsStore = mockProductsStore.filter((p) => p.id !== id)
+      FirestoreProductService.remove(id).catch(() => {})
     }
     if (prod) {
       await AuditLogRepository.addLog('Product Deleted', `Removed product: ${prod.name}`, 'Owner')
@@ -248,6 +268,11 @@ export const CategoryRepository = {
       await AuditLogRepository.addLog('Category Added', `Added category: ${category.name}`, 'Owner')
     }
     syncToStorage()
+
+    FirestoreCategoryService.save(category).catch((err) => {
+      console.warn('Firebase category save notice:', err)
+    })
+
     return category
   },
 
@@ -286,6 +311,10 @@ export const PageRepository = {
     page.updatedAt = new Date().toISOString()
     mockPagesStore[slug] = page
     syncToStorage()
+
+    FirestorePageService.savePage(page).catch((err) => {
+      console.warn('Firebase page draft save notice:', err)
+    })
   },
 
   async publishPage(slug: string): Promise<void> {
@@ -310,6 +339,11 @@ export const PageRepository = {
 
     await AuditLogRepository.addLog('Homepage Published', `Published version ${versionNum} with ${page.publishedSections.length} sections`, 'Owner')
     syncToStorage()
+
+    // Sync published page to Firebase Firestore
+    FirestorePageService.savePage(page).catch((err) => {
+      console.warn('Firebase page publish notice:', err)
+    })
   },
 
   async getVersions(slug: string): Promise<PageVersion[]> {
@@ -382,6 +416,12 @@ export const OrderRepository = {
       link: `/admin/orders/${order.id}`,
     })
     syncToStorage()
+
+    // Sync order to Firestore
+    FirestoreOrderService.save(order).catch((err) => {
+      console.warn('Firebase order save notice:', err)
+    })
+
     return order
   },
 
@@ -543,5 +583,49 @@ export const NotificationRepository = {
     }
     mockNotificationsStore.unshift(newNotif)
     syncToStorage()
+  },
+}
+
+/* =====================================================================
+   FIREBASE REAL-TIME SYNC REPOSITORY (Spark Free Tier)
+===================================================================== */
+export const FirebaseSyncRepository = {
+  async syncAllToFirestore(): Promise<{ productsCount: number; categoriesCount: number; pageSuccess: boolean }> {
+    syncFromStorage()
+    const productsCount = await FirestoreProductService.seedAll(mockProductsStore)
+    const categoriesCount = await FirestoreCategoryService.seedAll(mockCategoriesStore)
+    const page = await PageRepository.getPage('home')
+    await FirestorePageService.savePage(page)
+    return { productsCount, categoriesCount, pageSuccess: true }
+  },
+
+  async hydrateLiveFromFirestore(): Promise<{ productsLoaded: number; categoriesLoaded: number }> {
+    try {
+      const [fbProducts, fbCategories, fbPage] = await Promise.all([
+        FirestoreProductService.getAll(),
+        FirestoreCategoryService.getAll(),
+        FirestorePageService.getPage('home'),
+      ])
+
+      let pCount = 0
+      let cCount = 0
+
+      if (fbProducts && fbProducts.length > 0) {
+        mockProductsStore = fbProducts
+        pCount = fbProducts.length
+      }
+      if (fbCategories && fbCategories.length > 0) {
+        mockCategoriesStore = fbCategories
+        cCount = fbCategories.length
+      }
+      if (fbPage && fbPage.publishedSections && fbPage.publishedSections.length > 0) {
+        mockPagesStore['home'] = fbPage
+      }
+      syncToStorage()
+      return { productsLoaded: pCount, categoriesLoaded: cCount }
+    } catch (err) {
+      console.warn('Firebase hydration notice:', err)
+      return { productsLoaded: 0, categoriesLoaded: 0 }
+    }
   },
 }

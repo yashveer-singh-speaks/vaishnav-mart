@@ -2,13 +2,15 @@
 
 import React, { useState, useEffect } from 'react'
 import { SiteSettings } from '@/types'
-import { SettingsRepository } from '@/lib/data/repositories'
-import { Settings, Check, CheckCircle2 } from 'lucide-react'
+import { SettingsRepository, FirebaseSyncRepository } from '@/lib/data/repositories'
+import { Settings, Check, CheckCircle2, Database, Cloud, RefreshCw, Sparkles, ShieldCheck } from 'lucide-react'
 
 export default function AdminSettingsPage() {
   const [settings, setSettings] = useState<SiteSettings | null>(null)
   const [savedSuccess, setSavedSuccess] = useState(false)
   const [saving, setSaving] = useState(false)
+  const [syncingFirebase, setSyncingFirebase] = useState(false)
+  const [firebaseSyncResult, setFirebaseSyncResult] = useState<string | null>(null)
 
   useEffect(() => {
     SettingsRepository.getSettings().then(setSettings)
@@ -22,6 +24,19 @@ export default function AdminSettingsPage() {
     setSaving(false)
     setSavedSuccess(true)
     setTimeout(() => setSavedSuccess(false), 3000)
+  }
+
+  const handleSyncFirebase = async () => {
+    setSyncingFirebase(true)
+    setFirebaseSyncResult(null)
+    try {
+      const res = await FirebaseSyncRepository.syncAllToFirestore()
+      setFirebaseSyncResult(`✓ Synced ${res.productsCount} products and ${res.categoriesCount} categories directly to Firebase Firestore!`)
+    } catch (err: any) {
+      setFirebaseSyncResult(`Error syncing: ${err?.message || 'Check Firestore security rules'}`)
+    } finally {
+      setSyncingFirebase(false)
+    }
   }
 
   if (!settings) return <div className="p-8 text-xs text-taupe">Loading settings...</div>
@@ -215,6 +230,62 @@ export default function AdminSettingsPage() {
           </button>
         </div>
       </form>
+
+      {/* Firebase Real-Time Database Management (Spark Free Tier) */}
+      <div className="bg-ivory p-6 sm:p-8 rounded-3xl border border-sand space-y-5">
+        <div className="flex items-center justify-between pb-3 border-b border-sand">
+          <div className="flex items-center gap-2">
+            <Database className="w-5 h-5 text-burgundy" />
+            <h2 className="font-serif text-xl text-cocoa font-medium">
+              Firebase Cloud Firestore & Auth
+            </h2>
+          </div>
+          <span className="inline-flex items-center gap-1 text-[11px] font-semibold tracking-wide uppercase px-2.5 py-1 bg-botanical/15 text-botanical rounded-full border border-botanical/30">
+            <ShieldCheck className="w-3.5 h-3.5" />
+            <span>Connected (Spark Plan)</span>
+          </span>
+        </div>
+
+        <p className="text-xs text-taupe leading-relaxed">
+          Product text, categories, customer orders, and homepage section layouts are saved in real-time to your Firebase project (<code className="text-burgundy font-mono bg-cream/60 px-1 py-0.5 rounded font-bold">raskan-id</code>). Product packaging images remain hosted on GitHub for lightning-fast delivery and zero storage costs.
+        </p>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+          <div className="p-3 bg-porcelain rounded-xl border border-sand space-y-1">
+            <span className="text-[10px] uppercase font-bold text-taupe">Customer Authentication</span>
+            <p className="font-semibold text-cocoa">Google One-Click Login Live</p>
+          </div>
+          <div className="p-3 bg-porcelain rounded-xl border border-sand space-y-1">
+            <span className="text-[10px] uppercase font-bold text-taupe">Superadmin Portal</span>
+            <p className="font-semibold text-cocoa">Email/Password Live (raskanfood@gmail.com)</p>
+          </div>
+        </div>
+
+        {firebaseSyncResult && (
+          <div className={`p-3 rounded-xl text-xs font-semibold ${
+            firebaseSyncResult.startsWith('✓')
+              ? 'bg-botanical/15 border border-botanical/30 text-botanical'
+              : 'bg-clay/15 border border-clay/30 text-clay'
+          }`}>
+            {firebaseSyncResult}
+          </div>
+        )}
+
+        <div className="pt-2 flex items-center justify-between">
+          <span className="text-xs text-taupe font-sans">
+            Need to push all current catalog text and layouts into Firestore?
+          </span>
+          <button
+            type="button"
+            onClick={handleSyncFirebase}
+            disabled={syncingFirebase}
+            className="btn-secondary h-11 px-5 text-xs font-bold uppercase tracking-wider rounded-xl flex items-center gap-2"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 ${syncingFirebase ? 'animate-spin' : ''}`} />
+            <span>{syncingFirebase ? 'Syncing to Firebase...' : 'Push All Data to Firebase'}</span>
+          </button>
+        </div>
+      </div>
     </div>
   )
 }

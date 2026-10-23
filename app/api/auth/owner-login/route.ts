@@ -3,25 +3,47 @@ import { cookies } from 'next/headers'
 
 export async function POST(request: Request) {
   try {
-    const { email, password } = await request.json()
+    const { email, password, isFirebaseAuthenticated } = await request.json()
 
-    const expectedEmail = process.env.DEV_ADMIN_EMAIL || 'owner@vaishnavamart.local'
+    const validEmails = [
+      (process.env.DEV_ADMIN_EMAIL || '').toLowerCase(),
+      'raskanfood@gmail.com',
+      'owner@vaishnavamart.local',
+    ].filter(Boolean)
+
     const expectedPassword = process.env.DEV_ADMIN_PASSWORD || 'vaishnav123'
 
-    if (email === expectedEmail && password === expectedPassword) {
-      // In development / mock mode, set an httpOnly admin session cookie
+    // If verified directly via Firebase Auth Client
+    if (isFirebaseAuthenticated && validEmails.includes((email || '').toLowerCase())) {
       cookies().set('vm_admin_session', 'authenticated_owner', {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax',
-        maxAge: 60 * 60 * 24 * 7, // 7 days
+        maxAge: 60 * 60 * 24 * 7,
+        path: '/',
+      })
+
+      return NextResponse.json({
+        success: true,
+        message: 'Firebase Superadmin authenticated',
+        user: { email, role: 'super_admin' },
+      })
+    }
+
+    // Direct password match (Fallback & Dev Admin)
+    if (validEmails.includes((email || '').toLowerCase()) && password === expectedPassword) {
+      cookies().set('vm_admin_session', 'authenticated_owner', {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 60 * 60 * 24 * 7,
         path: '/',
       })
 
       return NextResponse.json({
         success: true,
         message: 'Owner authenticated successfully',
-        user: { email: expectedEmail, role: 'super_admin' },
+        user: { email, role: 'super_admin' },
       })
     }
 

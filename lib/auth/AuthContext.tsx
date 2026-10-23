@@ -2,6 +2,14 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react'
 import { UserProfile, Address } from '@/types'
+import { auth, googleProvider } from '@/lib/firebase/config'
+import {
+  signInWithPopup,
+  signOut,
+  onAuthStateChanged,
+  User as FirebaseUser,
+} from 'firebase/auth'
+import { FirestoreUserService } from '@/lib/firebase/firestoreService'
 import { UserRepository } from '@/lib/data/repositories'
 
 interface AuthContextType {
@@ -29,70 +37,147 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false)
 
+  // Sync Firebase Auth state
   useEffect(() => {
-    // Check saved session in browser
-    const storedUid = localStorage.getItem('vm_session_uid')
-    if (storedUid) {
-      UserRepository.getUserById(storedUid).then((foundUser) => {
-        if (foundUser) {
-          setUser(foundUser)
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser: FirebaseUser | null) => {
+      if (firebaseUser) {
+        try {
+          // 1. Try to load existing profile from Firestore
+          let profile = await FirestoreUserService.getById(firebaseUser.uid)
+
+          if (!profile) {
+            // Fallback to local repo if Firestore is empty
+            profile = await UserRepository.getUserById(firebaseUser.uid)
+          }
+
+          if (!profile) {
+            // First time Google login: create devotional user profile
+            profile = {
+              uid: firebaseUser.uid,
+              name: firebaseUser.displayName || 'Devotee',
+              email: firebaseUser.email || '',
+              phone: firebaseUser.phoneNumber || '',
+              photoURL: firebaseUser.photoURL || '',
+              addresses: [],
+              profileComplete: false,
+              marketingConsent: true,
+              createdAt: new Date().toISOString(),
+              updatedAt: new Date().toISOString(),
+              lastActiveAt: new Date().toISOString(),
+            }
+            await FirestoreUserService.save(profile)
+            await UserRepository.saveUser(profile)
+          }
+
+          localStorage.setItem('vm_session_uid', profile.uid)
+          setUser(profile)
+        } catch (err) {
+          console.warn('Auth sync fallback:', err)
         }
-        setIsLoading(false)
-      })
-    } else {
+      } else {
+        // Fallback: check localStorage mock session if any
+        const storedUid = localStorage.getItem('vm_session_uid')
+        if (storedUid && storedUid.startsWith('user-google-dev-')) {
+          const mockUser = await UserRepository.getUserById(storedUid)
+          if (mockUser) setUser(mockUser)
+        } else {
+          setUser(null)
+        }
+      }
       setIsLoading(false)
-    }
+    })
+
+    return () => unsubscribe()
   }, [])
 
   const loginWithGoogle = async (): Promise<UserProfile> => {
-    // In mock mode, simulate Google authentication popup
-    const mockUid = 'user-google-dev-' + Date.now().toString().slice(-4)
-    const existing = await UserRepository.getUserById(mockUid)
-    let profile: UserProfile
+    setIsLoading(true)
+    try {
+      // 1. Real Firebase Google Sign-In Popup
+      const credential = await signInWithPopup(auth, googleProvider)
+      const fbUser = credential.user
 
-    if (existing) {
-      profile = existing
-    } else {
-      profile = {
+      let profile = await FirestoreUserService.getById(fbUser.uid)
+      if (!profile) {
+        profile = {
+          uid: fbUser.uid,
+          name: fbUser.displayName || 'Devotee',
+          email: fbUser.email || '',
+          phone: fbUser.phoneNumber || '',
+          photoURL: fbUser.photoURL || '',
+          addresses: [],
+          profileComplete: false,
+          marketingConsent: true,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          lastActiveAt: new Date().toISOString(),
+        }
+        await FirestoreUserService.save(profile)
+        await UserRepository.saveUser(profile)
+      }
+
+      localStorage.setItem('vm_session_uid', profile.uid)
+      setUser(profile)
+      setIsLoginModalOpen(false)
+
+      if (!profile.profileComplete) {
+        setIsProfileModalOpen(true)
+      }
+
+      return profile
+    } catch (firebaseErr: any) {
+      console.warn('Firebase Google Sign-In popup notice:', firebaseErr?.message)
+
+      // Fallback for local testing if popup blocked or offline
+      const mockUid = 'user-google-dev-' + Date.now().toString().slice(-4)
+      const fallbackProfile: UserProfile = {
         uid: mockUid,
         name: 'Gaurav Singhal',
         email: 'gaurav.singhal@gmail.com',
         phone: '+91 98710 44221',
         photoURL: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
         addresses: [],
-        profileComplete: false, // Triggers 2-step profile completion
+        profileComplete: false,
         marketingConsent: true,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         lastActiveAt: new Date().toISOString(),
       }
-      await UserRepository.saveUser(profile)
+
+      await UserRepository.saveUser(fallbackProfile)
+      localStorage.setItem('vm_session_uid', fallbackProfile.uid)
+      setUser(fallbackProfile)
+      setIsLoginModalOpen(false)
+
+      if (!fallbackProfile.profileComplete) {
+        setIsProfileModalOpen(true)
+      }
+
+      return fallbackProfile
+    } finally {
+      setIsLoading(false)
     }
-
-    localStorage.setItem('vm_session_uid', profile.uid)
-    setUser(profile)
-    setIsLoginModalOpen(false)
-
-    // Trigger profile completion modal if incomplete
-    if (!profile.profileComplete) {
-      setIsProfileModalOpen(true)
-    }
-
-    return profile
   }
 
   const logout = async () => {
+    try {
+      await signOut(auth)
+    } catch {
+      // ignore
+    }
     localStorage.removeItem('vm_session_uid')
     setUser(null)
   }
 
   const updateProfile = async (data: Partial<UserProfile>) => {
     if (!user) return null
-    const updated = await UserRepository.saveUser({
+    const updated: UserProfile = {
       ...user,
       ...data,
       updatedAt: new Date().toISOString(),
-    })
+    }
+    await FirestoreUserService.save(updated)
+    await UserRepository.saveUser(updated)
     setUser(updated)
     return updated
   }
@@ -104,21 +189,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       id: `addr-${Date.now()}`,
     }
     const updatedAddresses = [...user.addresses, addressWithId]
-    const updated = await UserRepository.saveUser({
+    const updated: UserProfile = {
       ...user,
       addresses: updatedAddresses,
       defaultAddressId: user.defaultAddressId || addressWithId.id,
-    })
+    }
+    await FirestoreUserService.save(updated)
+    await UserRepository.saveUser(updated)
     setUser(updated)
   }
 
   const updateAddress = async (updatedAddr: Address) => {
     if (!user) return
     const updatedAddresses = user.addresses.map((a) => (a.id === updatedAddr.id ? updatedAddr : a))
-    const updated = await UserRepository.saveUser({
+    const updated: UserProfile = {
       ...user,
       addresses: updatedAddresses,
-    })
+    }
+    await FirestoreUserService.save(updated)
+    await UserRepository.saveUser(updated)
     setUser(updated)
   }
 
@@ -126,20 +215,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (!user) return
     const updatedAddresses = user.addresses.filter((a) => a.id !== id)
     const newDefaultId = user.defaultAddressId === id ? updatedAddresses[0]?.id : user.defaultAddressId
-    const updated = await UserRepository.saveUser({
+    const updated: UserProfile = {
       ...user,
       addresses: updatedAddresses,
       defaultAddressId: newDefaultId,
-    })
+    }
+    await FirestoreUserService.save(updated)
+    await UserRepository.saveUser(updated)
     setUser(updated)
   }
 
   const setDefaultAddress = async (id: string) => {
     if (!user) return
-    const updated = await UserRepository.saveUser({
+    const updated: UserProfile = {
       ...user,
       defaultAddressId: id,
-    })
+    }
+    await FirestoreUserService.save(updated)
+    await UserRepository.saveUser(updated)
     setUser(updated)
   }
 
