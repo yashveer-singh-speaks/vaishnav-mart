@@ -86,12 +86,29 @@ export const Header: React.FC = () => {
               className="group flex items-center gap-2 sm:gap-3 py-1 transition-all duration-300"
               aria-label="Vaishnava Mart Home"
             >
+              {/* Ras Kan Brand Logo */}
+              <div
+                className={`relative rounded-full overflow-hidden border border-gold/40 shadow-xs flex-shrink-0 transition-transform duration-300 group-hover:scale-105 ${
+                  scrolled ? 'w-8 h-8 sm:w-9 sm:h-9' : 'w-9 h-9 sm:w-11 sm:h-11'
+                }`}
+                title="Ras Kan - The Essence of Nature"
+              >
+                <Image
+                  src="/images/logo/logo.jpg"
+                  alt="Ras Kan Logo"
+                  fill
+                  sizes="48px"
+                  className="object-cover"
+                  priority
+                />
+              </div>
+
               {/* Sacred Tulsi Plant on the left */}
               <div
                 className="flex items-center justify-center transition-transform duration-300 group-hover:scale-105 flex-shrink-0"
                 title="Holy Basil (Tulsi)"
               >
-                <TulsiPlant className={scrolled ? 'w-8 h-8 sm:w-9 sm:h-9' : 'w-9 h-9 sm:w-11 sm:h-11'} />
+                <TulsiPlant className={scrolled ? 'w-7 h-7 sm:w-8 sm:h-8' : 'w-8 h-8 sm:w-9 sm:h-9'} />
               </div>
 
               {/* Sacred Vaishnava Tilak Symbol */}
@@ -99,7 +116,7 @@ export const Header: React.FC = () => {
                 className="flex items-center justify-center transition-transform duration-300 group-hover:scale-105 flex-shrink-0"
                 title="Vaishnava Tilak"
               >
-                <VaishnavaTilak className={scrolled ? 'w-5 h-7 sm:w-6 sm:h-8' : 'w-6 h-8 sm:w-7 sm:h-9'} />
+                <VaishnavaTilak className={scrolled ? 'w-5 h-7 sm:w-5.5 sm:h-7.5' : 'w-5.5 h-7.5 sm:w-6 sm:h-8'} />
               </div>
 
               {/* Brand Typography */}
@@ -287,7 +304,16 @@ export const Header: React.FC = () => {
                 onClick={() => setMobileMenuOpen(false)}
                 className="flex items-center gap-2"
               >
-                <TulsiPlant className="w-7 h-7 flex-shrink-0" />
+                <div className="relative w-7 h-7 rounded-full overflow-hidden border border-gold/40 flex-shrink-0">
+                  <Image
+                    src="/images/logo/logo.jpg"
+                    alt="Ras Kan Logo"
+                    fill
+                    sizes="28px"
+                    className="object-cover"
+                  />
+                </div>
+                <TulsiPlant className="w-6 h-6 flex-shrink-0" />
                 <VaishnavaTilak className="w-4 h-6 flex-shrink-0" />
                 <div className="flex flex-col text-left leading-none">
                   <span className="font-serif text-lg font-bold text-burgundy">Vaishnava Mart</span>

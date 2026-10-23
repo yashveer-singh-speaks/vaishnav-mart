@@ -23,8 +23,7 @@ export const ShopClient: React.FC<ShopClientProps> = ({ initialProducts, categor
     { id: 'vaishnav', label: 'Vaishnav Compliant' },
     { id: 'ekadashi', label: 'Ekadashi Friendly' },
     { id: 'bhoga', label: 'Bhoga Suitable' },
-    { id: 'no_onion', label: 'No Onion' },
-    { id: 'no_garlic', label: 'No Garlic' },
+    { id: 'no_onion', label: 'No Onion and No Garlic' },
   ]
 
   const toggleDiet = (id: string) => {

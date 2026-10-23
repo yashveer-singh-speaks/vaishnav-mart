@@ -3,8 +3,7 @@
 import React from 'react'
 
 const standards = [
-  { label: 'No Onion', detail: 'Zero Allium' },
-  { label: 'No Garlic', detail: 'Strict Sanctuary' },
+  { label: 'No Onion and No Garlic', detail: 'Strict Sanctuary' },
   { label: 'Jain Compliant', detail: 'Ahimsa Ethics' },
   { label: 'Vaishnav Compliant', detail: 'Sacred Seva' },
   { label: 'Bhoga Suitable', detail: 'Sanctified Purity' },

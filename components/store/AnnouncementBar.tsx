@@ -11,7 +11,7 @@ interface AnnouncementBarProps {
 }
 
 export const AnnouncementBar: React.FC<AnnouncementBarProps> = ({
-  text = 'Serving Customers Across India • 100% No Onion, No Garlic • Pure Satvik & Jain Pantry',
+  text = 'Serving Customers Across India • 100% No Onion and No Garlic • Pure Satvik & Jain Pantry',
   link = '/shop',
   enabled = true,
 }) => {

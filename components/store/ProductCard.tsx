@@ -18,14 +18,27 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, priorityImage
   const { isInWishlist, toggleWishlist } = useWishlist()
   const [justAdded, setJustAdded] = useState(false)
 
-  const cartItem = items.find((i) => i.productId === product.id)
+  // Pack / Buying Option selection (e.g. 200g vs Pocket 50g for Khakhras)
+  const [selectedPackId, setSelectedPackId] = useState<string>(
+    product.packOptions?.[0]?.id || (product.weight === 50 ? '50g' : '200g')
+  )
+
+  const activePack = product.packOptions?.find((p) => p.id === selectedPackId) || product.packOptions?.[0]
+  const activePrice = activePack ? activePack.price : product.price
+  const activeMrp = activePack ? activePack.mrp : product.mrp
+  const activeProductId = activePack?.productId || product.id
+  const activeDiscount = activeMrp > activePrice
+    ? Math.round(((activeMrp - activePrice) / activeMrp) * 100)
+    : 0
+
+  const cartItem = items.find((i) => i.productId === activeProductId)
   const quantity = cartItem?.quantity || 0
   const isWishlisted = isInWishlist(product.id)
 
   const handleQuickAdd = async (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
-    await addToCart(product.id, 1)
+    await addToCart(activeProductId, 1)
     setJustAdded(true)
     setTimeout(() => setJustAdded(false), 1200)
   }
@@ -33,13 +46,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, priorityImage
   const handleMinus = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
-    updateQuantity(product.id, quantity - 1)
+    updateQuantity(activeProductId, quantity - 1)
   }
 
   const handlePlus = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
-    updateQuantity(product.id, quantity + 1)
+    updateQuantity(activeProductId, quantity + 1)
   }
 
   return (
@@ -128,25 +141,36 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, priorityImage
       </div>
 
       {/* Information Area */}
-      <div className="flex flex-col flex-1 justify-between">
+      <div className="flex flex-col flex-1 justify-between pt-1">
         <div>
-          <span className="text-[10px] sm:text-xs text-taupe uppercase tracking-wider font-semibold block mb-1">
-            {product.categoryIds[0]?.replace('cat-', 'Pantry #') || 'Pure Satvik'}
-          </span>
           <Link href={`/${product.slug}`}>
-            <h3 className="font-serif text-base sm:text-lg text-cocoa font-medium line-clamp-1 group-hover:text-burgundy transition-colors">
+            <h3 className="font-serif text-base sm:text-lg text-cocoa font-bold line-clamp-2 leading-snug group-hover:text-burgundy transition-colors">
               {product.name}
             </h3>
           </Link>
-          {product.isCombo && product.comboItemNames && (
-            <div className="mt-1 text-[11px] text-copper font-medium line-clamp-1 bg-cream/40 px-1.5 py-0.5 rounded">
-              Includes: {product.comboItemNames.join(', ')}
+
+          {/* Khakhra / Pack Size Buying Options */}
+          {product.packOptions && product.packOptions.length > 0 && (
+            <div className="flex flex-wrap items-center gap-1.5 mt-2.5">
+              {product.packOptions.map((opt) => (
+                <button
+                  key={opt.id}
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    setSelectedPackId(opt.id)
+                  }}
+                  className={`text-[10px] px-2 py-0.5 rounded-md font-semibold border transition-all ${
+                    selectedPackId === opt.id
+                      ? 'border-burgundy bg-burgundy text-ivory shadow-xs'
+                      : 'border-sand bg-cream/40 text-cocoa hover:border-gold'
+                  }`}
+                >
+                  {opt.id === '200g' ? '200g' : 'Pocket 50g'}
+                </button>
+              ))}
             </div>
-          )}
-          {!product.isCombo && (
-            <p className="text-xs text-taupe line-clamp-1 mt-0.5">
-              {product.features.map((f) => f.name).join(' • ')}
-            </p>
           )}
         </div>
 
@@ -154,15 +178,15 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, priorityImage
         <div className="mt-3 pt-2 border-t border-sand/50 flex items-center justify-between">
           <div className="flex items-baseline gap-2">
             <span className="font-sans font-bold text-base sm:text-lg text-burgundy">
-              ₹{product.price}
+              ₹{activePrice}
             </span>
-            {product.mrp > product.price && (
+            {activeMrp > activePrice && (
               <>
                 <span className="font-sans text-xs text-taupe line-through">
-                  ₹{product.mrp}
+                  ₹{activeMrp}
                 </span>
                 <span className="text-[10px] font-bold text-botanical uppercase tracking-wide">
-                  ({Math.round(((product.mrp - product.price) / product.mrp) * 100)}% OFF)
+                  ({activeDiscount}% OFF)
                 </span>
               </>
             )}

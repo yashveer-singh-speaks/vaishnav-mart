@@ -38,12 +38,24 @@ export const ProductDetailClient: React.FC<ProductDetailClientProps> = ({
   const [justAdded, setJustAdded] = useState(false)
   const [openAccordion, setOpenAccordion] = useState<string | null>('description')
 
-  const discountPercent = product.mrp > product.price
-    ? Math.round(((product.mrp - product.price) / product.mrp) * 100)
+  // Buying Options / Pack Selection (e.g. 200g vs Pocket 50g Khakhra)
+  const [selectedPackId, setSelectedPackId] = useState<string>(
+    product.packOptions?.[0]?.id || (product.weight === 50 ? '50g' : '200g')
+  )
+
+  const activePack = product.packOptions?.find((p) => p.id === selectedPackId) || product.packOptions?.[0]
+  const displayPrice = activePack ? activePack.price : product.price
+  const displayMrp = activePack ? activePack.mrp : product.mrp
+  const displayWeight = activePack ? activePack.weight : product.weight
+  const displayUnit = activePack ? activePack.unit : product.unit
+  const activeProductId = activePack?.productId || product.id
+
+  const discountPercent = displayMrp > displayPrice
+    ? Math.round(((displayMrp - displayPrice) / displayMrp) * 100)
     : 0
 
   const handleAddToCart = async () => {
-    await addToCart(product.id, quantity)
+    await addToCart(activeProductId, quantity)
     setJustAdded(true)
     setTimeout(() => {
       setJustAdded(false)
@@ -52,7 +64,7 @@ export const ProductDetailClient: React.FC<ProductDetailClientProps> = ({
   }
 
   const handleBuyNow = async () => {
-    await addToCart(product.id, quantity)
+    await addToCart(activeProductId, quantity)
     if (!isAuthenticated) {
       setIsLoginModalOpen(true)
       return
@@ -123,20 +135,69 @@ export const ProductDetailClient: React.FC<ProductDetailClientProps> = ({
               </h1>
 
               <p className="text-xs text-taupe mt-2 font-mono">
-                SKU: {product.sku || 'VM-STD'} • Net Wt: {product.weight} {product.unit}
+                SKU: {product.sku || 'VM-STD'} • Net Wt: {displayWeight} {displayUnit}
               </p>
             </div>
+
+            {/* Buying Options (Pack Size Selection for Khakhras & Multi-pack Products) */}
+            {product.packOptions && product.packOptions.length > 0 && (
+              <div className="space-y-2.5 pt-1">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold uppercase tracking-wider text-taupe">
+                    Select Buying Option:
+                  </span>
+                  <span className="text-[11px] font-semibold text-copper">
+                    {activePack?.name}
+                  </span>
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  {product.packOptions.map((opt) => {
+                    const isSelected = selectedPackId === opt.id
+                    return (
+                      <button
+                        key={opt.id}
+                        type="button"
+                        onClick={() => setSelectedPackId(opt.id)}
+                        className={`p-3.5 rounded-xl border text-left transition-all relative ${
+                          isSelected
+                            ? 'border-burgundy bg-burgundy/5 text-burgundy shadow-sm ring-2 ring-burgundy'
+                            : 'border-sand bg-porcelain text-cocoa hover:border-gold'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="font-bold text-sm">{opt.name}</span>
+                          {isSelected && (
+                            <span className="w-2.5 h-2.5 rounded-full bg-burgundy ring-2 ring-cream" />
+                          )}
+                        </div>
+                        <div className="flex items-baseline gap-2 mt-1.5">
+                          <span className="font-sans font-bold text-base text-burgundy">
+                            ₹{opt.price}
+                          </span>
+                          <span className="font-sans text-xs text-taupe line-through">
+                            ₹{opt.mrp}
+                          </span>
+                          <span className="text-[10px] font-bold text-clay uppercase">
+                            {opt.discountPercent}% OFF
+                          </span>
+                        </div>
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>
+            )}
 
             {/* Pricing Area */}
             <div className="p-4 bg-porcelain rounded-2xl border border-sand flex items-baseline justify-between">
               <div className="flex items-baseline gap-3">
                 <span className="font-sans text-2xl sm:text-3xl font-bold text-burgundy">
-                  ₹{product.price}
+                  ₹{displayPrice}
                 </span>
-                {product.mrp > product.price && (
+                {displayMrp > displayPrice && (
                   <>
                     <span className="font-sans text-base text-taupe line-through">
-                      MRP ₹{product.mrp}
+                      MRP ₹{displayMrp}
                     </span>
                     <span className="text-xs font-bold px-2.5 py-1 rounded-md bg-clay text-ivory uppercase tracking-wider shadow-sm">
                       {discountPercent}% OFF

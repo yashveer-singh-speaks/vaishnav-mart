@@ -20,6 +20,17 @@ export interface ProductSEO {
   noIndex?: boolean
 }
 
+export interface ProductPackOption {
+  id: string
+  name: string
+  weight: number
+  unit: string
+  mrp: number
+  price: number
+  discountPercent?: number
+  productId?: string
+}
+
 export interface Product {
   id: string
   name: string
@@ -39,6 +50,7 @@ export interface Product {
   similarProductIds: string[]
   status: ProductStatus
   seo: ProductSEO
+  packOptions?: ProductPackOption[]
   ingredients?: string
   usage?: string
   storage?: string

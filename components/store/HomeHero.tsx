@@ -106,7 +106,7 @@ export const HomeHero: React.FC<HomeHeroProps> = ({
           <div className="mt-12 pt-8 border-t border-sand/80 flex flex-wrap items-center gap-x-6 gap-y-3 text-xs text-cocoa font-medium">
             <div className="flex items-center gap-2">
               <span className="text-burgundy font-bold">✓</span>
-              <span>100% No Onion, No Garlic</span>
+              <span>100% No Onion and No Garlic</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="text-burgundy font-bold">✓</span>
