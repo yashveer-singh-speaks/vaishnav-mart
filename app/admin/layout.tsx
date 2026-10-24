@@ -78,14 +78,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <div className="space-y-6">
           {/* Logo */}
           <div className="pb-4 border-b border-sand">
-            <Link href="/admin" className="block relative w-44 h-12">
+            <Link href="/admin" className="block relative w-44 h-14 rounded-xl overflow-hidden bg-black border border-gold/40 shadow-xs">
               <Image
-                src="/images/logo/logo.jpg"
-                alt="Vaishnava Mart"
+                src="/images/logo/logo.png"
+                alt="Ras Kan - True Vaishnav Standards"
                 fill
                 priority
                 sizes="176px"
-                className="object-contain object-left"
+                className="object-contain p-1"
               />
             </Link>
             <span className="text-[10px] font-bold uppercase tracking-widest text-burgundy block mt-2">
@@ -251,8 +251,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <div className="relative z-10 w-72 h-full bg-ivory shadow-2xl flex flex-col justify-between p-6">
             <div className="space-y-6">
               <div className="flex items-center justify-between pb-4 border-b border-sand">
-                <div className="relative w-36 h-10">
-                  <Image src="/images/logo/logo.jpg" alt="Vaishnava Mart" fill className="object-contain" />
+                <div className="relative w-36 h-12 rounded-lg overflow-hidden bg-black border border-gold/40 shadow-xs">
+                  <Image src="/images/logo/logo.png" alt="Ras Kan" fill className="object-contain p-0.5" />
                 </div>
                 <button onClick={() => setMobileDrawerOpen(false)} className="p-1 text-taupe">
                   <X className="w-5 h-5" />

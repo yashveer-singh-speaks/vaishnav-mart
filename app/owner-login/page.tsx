@@ -61,14 +61,14 @@ export default function OwnerLoginPage() {
       <div className="w-full max-w-md bg-porcelain border border-sand rounded-3xl shadow-xl p-8 sm:p-10 space-y-6">
         {/* Logo */}
         <div className="text-center space-y-2">
-          <div className="relative w-20 h-20 mx-auto rounded-full overflow-hidden border-2 border-gold/40 shadow-sm">
+          <div className="relative w-44 h-24 mx-auto rounded-2xl overflow-hidden border-2 border-gold/40 shadow-sm bg-black">
             <Image
-              src="/images/logo/logo.jpg"
+              src="/images/logo/logo.png"
               alt="Ras Kan Logo"
               fill
               priority
-              sizes="80px"
-              className="object-cover"
+              sizes="176px"
+              className="object-contain p-1"
             />
           </div>
           <h1 className="font-serif text-2xl sm:text-3xl text-cocoa font-bold pt-2">Owner Portal</h1>

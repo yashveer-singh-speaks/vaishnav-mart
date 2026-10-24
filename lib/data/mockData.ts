@@ -2,7 +2,7 @@ import { Product, Category, PageContent, SiteSettings, UserProfile, Order, Cart,
 
 export const initialSiteSettings: SiteSettings = {
   businessName: 'Vaishnava Mart (Ras Kan)',
-  logoUrl: '/images/logo/logo.jpg',
+  logoUrl: '/images/logo/logo.png',
   whatsapp: '+918595268400',
   email: 'nimaitrade55@gmail.com',
   phone: '+91 85952 68400',

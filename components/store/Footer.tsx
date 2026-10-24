@@ -23,6 +23,9 @@ export const Footer: React.FC = () => {
           {/* Brand & Philosophy Column */}
           <div className="lg:col-span-2 space-y-4">
             <Link href="/" className="inline-flex items-center gap-2.5">
+              <div className="relative w-14 h-9 rounded-lg overflow-hidden border border-gold/40 bg-black flex-shrink-0 shadow-xs">
+                <Image src="/images/logo/logo.png" alt="Ras Kan Logo" fill sizes="64px" className="object-contain p-0.5" />
+              </div>
               <TulsiPlant className="w-9 h-9" />
               <VaishnavaTilak className="w-5 h-7" />
               <div className="flex flex-col text-left leading-none">

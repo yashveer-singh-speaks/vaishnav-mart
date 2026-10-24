@@ -32,10 +32,19 @@ export const metadata: Metadata = {
   description:
     'Dedicated culinary purity for Jain, Vaishnav, and devout Satvik homes. 100% free from onion, garlic, and contamination. Cold-ground whole spices, fasting staples, and royal dry fruits.',
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://vaishnavamart.com'),
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/icon.png', type: 'image/png' },
+      { url: '/images/logo/logo.png', type: 'image/png' },
+    ],
+    shortcut: '/favicon.ico',
+    apple: '/images/logo/logo.png',
+  },
   openGraph: {
     title: 'Vaishnava Mart | Divine Satvik Purity',
     description: 'Devotional Satvik and Jain food essentials prepared under dedicated zero-contamination standards.',
-    images: ['/images/generated/hero-bg.jpg'],
+    images: ['/images/logo/logo.png'],
     locale: 'en_IN',
     type: 'website',
   },

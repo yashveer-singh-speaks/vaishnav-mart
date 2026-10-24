@@ -39,13 +39,13 @@ export const LoginModal: React.FC = () => {
         </button>
 
         {/* Brand Emblem */}
-        <div className="relative w-28 h-12 mb-4">
+        <div className="relative w-36 h-20 mb-4 rounded-xl overflow-hidden bg-black border border-gold/40 shadow-sm">
           <Image
-            src="/images/logo/logo.jpg"
-            alt="Vaishnava Mart"
+            src="/images/logo/logo.png"
+            alt="Ras Kan - True Vaishnav Standards"
             fill
-            sizes="112px"
-            className="object-contain"
+            sizes="144px"
+            className="object-contain p-1"
           />
         </div>
 

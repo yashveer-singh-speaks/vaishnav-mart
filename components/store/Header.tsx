@@ -88,17 +88,17 @@ export const Header: React.FC = () => {
             >
               {/* Ras Kan Brand Logo */}
               <div
-                className={`relative rounded-full overflow-hidden border border-gold/40 shadow-xs flex-shrink-0 transition-transform duration-300 group-hover:scale-105 ${
-                  scrolled ? 'w-8 h-8 sm:w-9 sm:h-9' : 'w-9 h-9 sm:w-11 sm:h-11'
+                className={`relative rounded-xl overflow-hidden border border-gold/40 shadow-xs flex-shrink-0 bg-black transition-transform duration-300 group-hover:scale-105 ${
+                  scrolled ? 'w-11 h-8 sm:w-14 sm:h-9' : 'w-14 h-9 sm:w-16 sm:h-10'
                 }`}
-                title="Ras Kan - The Essence of Nature"
+                title="Ras Kan - True Vaishnav Standards"
               >
                 <Image
-                  src="/images/logo/logo.jpg"
+                  src="/images/logo/logo.png"
                   alt="Ras Kan Logo"
                   fill
-                  sizes="48px"
-                  className="object-cover"
+                  sizes="64px"
+                  className="object-contain p-0.5"
                   priority
                 />
               </div>
@@ -304,13 +304,13 @@ export const Header: React.FC = () => {
                 onClick={() => setMobileMenuOpen(false)}
                 className="flex items-center gap-2"
               >
-                <div className="relative w-7 h-7 rounded-full overflow-hidden border border-gold/40 flex-shrink-0">
+                <div className="relative w-12 h-8 rounded-lg overflow-hidden border border-gold/40 flex-shrink-0 bg-black">
                   <Image
-                    src="/images/logo/logo.jpg"
+                    src="/images/logo/logo.png"
                     alt="Ras Kan Logo"
                     fill
-                    sizes="28px"
-                    className="object-cover"
+                    sizes="48px"
+                    className="object-contain p-0.5"
                   />
                 </div>
                 <TulsiPlant className="w-6 h-6 flex-shrink-0" />
