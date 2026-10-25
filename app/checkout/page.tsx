@@ -474,7 +474,7 @@ export default function CheckoutPage() {
                       </div>
                       <div>
                         <p className="font-medium text-cocoa">{product.name}</p>
-                        <p className="text-taupe">Qty: {quantity} × ₹{product.price}</p>
+                        <p className="text-taupe">{product.weight ? `${product.weight}${product.unit} • ` : ''}Qty: {quantity} × ₹{product.price}</p>
                       </div>
                     </div>
                     <span className="font-semibold text-sm text-cocoa">₹{product.price * quantity}</span>

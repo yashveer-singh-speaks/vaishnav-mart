@@ -61,10 +61,24 @@ let mockNotificationsStore: AdminNotification[] = [...initialNotifications]
 function syncFromStorage() {
   if (typeof window === 'undefined') return
   try {
-    const p = localStorage.getItem('vm_products')
-    if (p) mockProductsStore = JSON.parse(p)
-    const c = localStorage.getItem('vm_categories')
-    if (c) mockCategoriesStore = JSON.parse(c)
+    const p = localStorage.getItem('vm_products_v3')
+    if (p) {
+      mockProductsStore = JSON.parse(p)
+      if (!mockProductsStore.some((pr) => pr.id === 'rk-kha-01' && pr.packOptions && pr.packOptions.length > 0)) {
+        mockProductsStore = [...initialProducts]
+        localStorage.setItem('vm_products_v3', JSON.stringify(mockProductsStore))
+      }
+    } else {
+      mockProductsStore = [...initialProducts]
+      localStorage.setItem('vm_products_v3', JSON.stringify(mockProductsStore))
+    }
+    const c = localStorage.getItem('vm_categories_v3')
+    if (c) {
+      mockCategoriesStore = JSON.parse(c)
+    } else {
+      mockCategoriesStore = [...initialCategories]
+      localStorage.setItem('vm_categories_v3', JSON.stringify(mockCategoriesStore))
+    }
     const pg = localStorage.getItem('vm_pages')
     if (pg) mockPagesStore = JSON.parse(pg)
     const s = localStorage.getItem('vm_settings')
@@ -87,8 +101,8 @@ function syncFromStorage() {
 function syncToStorage() {
   if (typeof window === 'undefined') return
   try {
-    localStorage.setItem('vm_products', JSON.stringify(mockProductsStore))
-    localStorage.setItem('vm_categories', JSON.stringify(mockCategoriesStore))
+    localStorage.setItem('vm_products_v3', JSON.stringify(mockProductsStore))
+    localStorage.setItem('vm_categories_v3', JSON.stringify(mockCategoriesStore))
     localStorage.setItem('vm_pages', JSON.stringify(mockPagesStore))
     localStorage.setItem('vm_settings', JSON.stringify(mockSettingsStore))
     localStorage.setItem('vm_users', JSON.stringify(mockUsersStore))
@@ -127,12 +141,24 @@ export const ProductRepository = {
 
   async getProductById(id: string): Promise<Product | null> {
     syncFromStorage()
+    if (id === 'rk-kha-08') return mockProductsStore.find((p) => p.id === 'rk-kha-06-50g' || p.id === 'rk-kha-08') || null
+    if (id === 'rk-kha-09') return mockProductsStore.find((p) => p.id === 'rk-kha-07-50g' || p.id === 'rk-kha-09') || null
     return mockProductsStore.find((p) => p.id === id) || null
   },
 
   async getProductBySlug(slug: string): Promise<Product | null> {
     syncFromStorage()
-    return mockProductsStore.find((p) => p.slug === slug) || null
+    const clean = slug.toLowerCase()
+    return (
+      mockProductsStore.find((p) => p.slug.toLowerCase() === clean) ||
+      mockProductsStore.find(
+        (p) =>
+          p.slug.toLowerCase().replace(/-200g$/, '') === clean ||
+          p.slug.toLowerCase().replace(/-50g$/, '') === clean
+      ) ||
+      mockProductsStore.find((p) => p.id.toLowerCase() === clean) ||
+      null
+    )
   },
 
   async saveProduct(product: Product): Promise<Product> {

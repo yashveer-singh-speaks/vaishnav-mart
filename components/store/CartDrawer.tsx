@@ -111,13 +111,20 @@ export const CartDrawer: React.FC = () => {
                 {/* Details */}
                 <div className="flex-1 flex flex-col justify-between min-w-0">
                   <div className="flex justify-between items-start gap-2">
-                    <Link
-                      href={`/${product.slug}`}
-                      onClick={() => setIsCartDrawerOpen(false)}
-                      className="font-medium text-sm text-cocoa hover:text-burgundy transition-colors line-clamp-1"
-                    >
-                      {product.name}
-                    </Link>
+                    <div className="min-w-0">
+                      <Link
+                        href={`/${product.slug}`}
+                        onClick={() => setIsCartDrawerOpen(false)}
+                        className="font-medium text-sm text-cocoa hover:text-burgundy transition-colors line-clamp-1"
+                      >
+                        {product.name}
+                      </Link>
+                      {product.weight && (
+                        <span className="inline-block mt-0.5 text-[11px] font-semibold text-copper bg-cream/70 px-1.5 py-0.5 rounded border border-sand">
+                          {product.weight} {product.unit}
+                        </span>
+                      )}
+                    </div>
                     <button
                       onClick={() => removeFromCart(product.id)}
                       className="text-taupe/60 hover:text-clay p-1"

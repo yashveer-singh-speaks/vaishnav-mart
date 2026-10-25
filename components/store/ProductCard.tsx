@@ -161,13 +161,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, priorityImage
                     e.stopPropagation()
                     setSelectedPackId(opt.id)
                   }}
-                  className={`text-[10px] px-2 py-0.5 rounded-md font-semibold border transition-all ${
+                  className={`text-xs px-2.5 py-0.5 rounded-md font-bold border transition-all ${
                     selectedPackId === opt.id
                       ? 'border-burgundy bg-burgundy text-ivory shadow-xs'
-                      : 'border-sand bg-cream/40 text-cocoa hover:border-gold'
+                      : 'border-sand bg-cream/50 text-cocoa hover:border-gold'
                   }`}
                 >
-                  {opt.id === '200g' ? '200g' : 'Pocket 50g'}
+                  {opt.name}
                 </button>
               ))}
             </div>
