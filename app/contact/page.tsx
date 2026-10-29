@@ -142,7 +142,7 @@ export default function ContactPage() {
                     <input
                       type="email"
                       required
-                      placeholder="gaurav@example.com"
+                      placeholder="yourname@gmail.com"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       className="w-full p-3 bg-ivory border border-sand rounded-xl text-xs text-cocoa focus:border-burgundy outline-none"

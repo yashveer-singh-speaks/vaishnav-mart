@@ -17,7 +17,7 @@ export const CollaborationSection: React.FC<CollaborationProps> = ({
   body = 'We partner with temples, ashrams, sacred caterers, and pure Satvik culinary ventures committed to authentic ingredients.',
   image = '/images/generated/collaboration-bg.jpg',
 }) => {
-  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '+919876543210'
+  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '8595268400'
   const cleanNumber = whatsappNumber.replace(/[^0-9]/g, '')
   const message = encodeURIComponent(
     'Hello Vaishnava Mart, I would like to discuss a potential collaboration or business opportunity. Please let me know a convenient time to connect.'
