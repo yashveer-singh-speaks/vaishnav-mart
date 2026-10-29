@@ -3,14 +3,12 @@
 import React, { useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { Lock, Eye, EyeOff, ShieldCheck, ArrowRight, Sparkles } from 'lucide-react'
-import { auth } from '@/lib/firebase/config'
-import { signInWithEmailAndPassword } from 'firebase/auth'
+import { Lock, Eye, EyeOff, ShieldCheck, ArrowRight } from 'lucide-react'
 
 export default function OwnerLoginPage() {
   const router = useRouter()
-  const [email, setEmail] = useState('raskanfood@gmail.com')
-  const [password, setPassword] = useState('vaishnav123')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -21,25 +19,13 @@ export default function OwnerLoginPage() {
     setLoading(true)
 
     try {
-      // 1. First attempt login through Firebase Auth
-      let fbSuccess = false
-      try {
-        const userCred = await signInWithEmailAndPassword(auth, email, password)
-        if (userCred.user) {
-          fbSuccess = true
-        }
-      } catch (fbErr: any) {
-        console.info('Firebase direct auth attempt:', fbErr?.code || fbErr?.message)
-      }
-
-      // 2. Establish Server Admin Session
+      // Establish Server Admin Session
       const res = await fetch('/api/auth/owner-login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          email,
+          email: email.trim(),
           password,
-          isFirebaseAuthenticated: fbSuccess,
         }),
       })
 
@@ -77,19 +63,15 @@ export default function OwnerLoginPage() {
           </p>
         </div>
 
-        {/* Firebase Connected Badge */}
-        <div className="p-3.5 bg-cream/70 border border-sand rounded-xl text-xs space-y-1.5 text-taupe font-sans">
+        {/* Security Notice */}
+        <div className="p-3.5 bg-cream/70 border border-sand rounded-xl text-xs space-y-1 text-taupe font-sans">
           <div className="flex items-center gap-1.5 font-bold text-burgundy uppercase tracking-wider text-[11px]">
             <ShieldCheck className="w-4 h-4 text-botanical" />
-            <span>Firebase Authentication & Firestore Live</span>
+            <span>Authorized Management Access</span>
           </div>
           <p className="text-[11px] text-cocoa leading-relaxed">
-            Superadmin Email/Password is connected to Firebase project <span className="font-mono text-copper font-semibold">raskan-id</span>.
+            Please enter your administrator credentials to manage catalog, orders, and store operations.
           </p>
-          <div className="flex items-center gap-1 text-[10px] text-copper">
-            <Sparkles className="w-3 h-3 text-gold" />
-            <span>Spark Plan Free Tier • Real-Time Database Active</span>
-          </div>
         </div>
 
         {error && (
@@ -101,11 +83,13 @@ export default function OwnerLoginPage() {
         <form onSubmit={handleLogin} className="space-y-4">
           <div>
             <label className="text-xs font-semibold uppercase tracking-wider text-taupe block mb-1">
-              Superadmin Email
+              Admin Email
             </label>
             <input
               type="email"
               required
+              autoComplete="username"
+              placeholder="admin@vaishnavamart.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full p-3 bg-ivory border border-sand rounded-xl text-xs text-cocoa focus:border-burgundy outline-none font-sans"
@@ -120,6 +104,8 @@ export default function OwnerLoginPage() {
               <input
                 type={showPassword ? 'text' : 'password'}
                 required
+                autoComplete="current-password"
+                placeholder="Enter admin password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full p-3 pr-10 bg-ivory border border-sand rounded-xl text-xs text-cocoa focus:border-burgundy outline-none font-mono"

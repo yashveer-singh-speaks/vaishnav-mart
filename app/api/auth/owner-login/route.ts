@@ -3,7 +3,7 @@ import { cookies } from 'next/headers'
 
 export async function POST(request: Request) {
   try {
-    const { email, password, isFirebaseAuthenticated } = await request.json()
+    const { email, password } = await request.json()
 
     const validEmails = [
       (process.env.DEV_ADMIN_EMAIL || '').toLowerCase(),
@@ -11,27 +11,14 @@ export async function POST(request: Request) {
       'owner@vaishnavamart.local',
     ].filter(Boolean)
 
-    const expectedPassword = process.env.DEV_ADMIN_PASSWORD || 'vaishnav123'
+    const expectedPassword = process.env.DEV_ADMIN_PASSWORD
 
-    // If verified directly via Firebase Auth Client
-    if (isFirebaseAuthenticated && validEmails.includes((email || '').toLowerCase())) {
-      cookies().set('vm_admin_session', 'authenticated_owner', {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        maxAge: 60 * 60 * 24 * 7,
-        path: '/',
-      })
-
-      return NextResponse.json({
-        success: true,
-        message: 'Firebase Superadmin authenticated',
-        user: { email, role: 'super_admin' },
-      })
-    }
-
-    // Direct password match (Fallback & Dev Admin)
-    if (validEmails.includes((email || '').toLowerCase()) && password === expectedPassword) {
+    // Strict validation: password must match DEV_ADMIN_PASSWORD from environment
+    if (
+      expectedPassword &&
+      validEmails.includes((email || '').toLowerCase()) &&
+      password === expectedPassword
+    ) {
       cookies().set('vm_admin_session', 'authenticated_owner', {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',

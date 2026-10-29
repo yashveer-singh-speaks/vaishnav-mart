@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Script from 'next/script'
 import { Cormorant_Garamond, Manrope, Rozha_One } from 'next/font/google'
 import './globals.css'
 import { AuthProvider } from '@/lib/auth/AuthContext'
@@ -65,6 +66,10 @@ export default function RootLayout({
             </WishlistProvider>
           </CartProvider>
         </AuthProvider>
+        <Script
+          src="https://checkout.razorpay.com/v1/checkout.js"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   )

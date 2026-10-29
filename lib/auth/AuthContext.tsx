@@ -23,7 +23,7 @@ interface AuthContextType {
   loginWithGoogle: () => Promise<UserProfile>
   logout: () => Promise<void>
   updateProfile: (data: Partial<UserProfile>) => Promise<UserProfile | null>
-  addAddress: (address: Omit<Address, 'id'>) => Promise<void>
+  addAddress: (address: Omit<Address, 'id'>) => Promise<Address | undefined>
   updateAddress: (address: Address) => Promise<void>
   deleteAddress: (id: string) => Promise<void>
   setDefaultAddress: (id: string) => Promise<void>
@@ -182,8 +182,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return updated
   }
 
-  const addAddress = async (newAddr: Omit<Address, 'id'>) => {
-    if (!user) return
+  const addAddress = async (newAddr: Omit<Address, 'id'>): Promise<Address | undefined> => {
+    if (!user) return undefined
     const addressWithId: Address = {
       ...newAddr,
       id: `addr-${Date.now()}`,
@@ -197,6 +197,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     await FirestoreUserService.save(updated)
     await UserRepository.saveUser(updated)
     setUser(updated)
+    return addressWithId
   }
 
   const updateAddress = async (updatedAddr: Address) => {

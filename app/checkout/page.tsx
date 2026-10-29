@@ -27,7 +27,7 @@ export default function CheckoutPage() {
   const [currentStage, setCurrentStage] = useState<1 | 2 | 3>(1)
   const [selectedAddressId, setSelectedAddressId] = useState<string>('')
   const [deliveryNotes, setDeliveryNotes] = useState('')
-  const [paymentMethod, setPaymentMethod] = useState<'mock' | 'cod'>('mock')
+  const [paymentMethod, setPaymentMethod] = useState<'razorpay' | 'cod'>('razorpay')
   const [isProcessing, setIsProcessing] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
 
@@ -55,7 +55,7 @@ export default function CheckoutPage() {
     e.preventDefault()
     if (!newLine1.trim() || !newArea.trim()) return
 
-    await addAddress({
+    const newAddr = await addAddress({
       label: 'Home',
       fullName: newFullName || user?.name || 'Customer',
       phone: newPhone || user?.phone || '',
@@ -67,42 +67,30 @@ export default function CheckoutPage() {
       isDefault: true,
     })
 
+    if (newAddr?.id) {
+      setSelectedAddressId(newAddr.id)
+    }
+
     setIsAddingNewAddress(false)
   }
 
   const handlePlaceOrder = async () => {
     if (!user || !selectedAddress) {
       setErrorMessage('Please select a valid delivery address')
+      setIsProcessing(false)
       return
     }
 
     if (items.length === 0) {
       setErrorMessage('Your cart is empty')
+      setIsProcessing(false)
       return
     }
 
     setIsProcessing(true)
     setErrorMessage('')
 
-    try {
-      // 1. Process payment via provider abstraction
-      const paymentProvider = getPaymentProvider()
-      const paymentOrder = await paymentProvider.createOrder({
-        amount: total,
-        receipt: `rcpt_${Date.now()}`,
-        notes: { userId: user.uid },
-      })
-
-      const paymentVerification = await paymentProvider.verifyPayment({
-        orderId: paymentOrder.orderId,
-        paymentId: `pay_mock_${Date.now()}`,
-      })
-
-      if (!paymentVerification.success) {
-        throw new Error('Payment processing was declined.')
-      }
-
-      // 2. Prepare purchase snapshots
+    const createAndSaveOrder = async (payId: string, method: 'razorpay' | 'cod') => {
       const itemSnapshots: OrderItemSnapshot[] = items.map((i) => ({
         productId: i.productId,
         productNameSnapshot: i.product.name,
@@ -130,21 +118,90 @@ export default function CheckoutPage() {
         discount: 0,
         shipping: shippingCost,
         finalTotal: total,
-        paymentState: 'paid',
-        paymentMethod: paymentMethod === 'cod' ? 'cod' : 'mock',
-        paymentId: paymentVerification.paymentId,
+        paymentState: method === 'cod' ? 'pending' : 'paid',
+        paymentMethod: method,
+        paymentId: payId,
         orderStatus: 'confirmed',
         notes: deliveryNotes || undefined,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       }
 
-      // 3. Save order to repository
       await OrderRepository.createOrder(newOrder)
-
-      // 4. Clear cart & redirect
       await clearCart()
       router.push(`/order-success/${newOrder.id}`)
+    }
+
+    try {
+      if (paymentMethod === 'cod') {
+        await createAndSaveOrder(`cod_${Date.now()}`, 'cod')
+        return
+      }
+
+      // Online Live Razorpay Payment
+      const paymentProvider = getPaymentProvider()
+      const paymentOrder = await paymentProvider.createOrder({
+        amount: total,
+        receipt: `rcpt_${Date.now()}`,
+        notes: { userId: user.uid, customerEmail: user.email || '' },
+      })
+
+      // If Razorpay SDK is loaded in window
+      if (typeof window !== 'undefined' && (window as any).Razorpay) {
+        const options = {
+          key: paymentOrder.keyId || process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+          amount: paymentOrder.amountPaise ?? Math.round(paymentOrder.amount * 100),
+          currency: paymentOrder.currency || 'INR',
+          name: 'Vaishnava Mart',
+          description: `Order ${paymentOrder.orderId} - Pure Satvik Food`,
+          image: '/images/logo/logo.png',
+          order_id: paymentOrder.orderId,
+          handler: async function (response: any) {
+            try {
+              const verifyRes = await paymentProvider.verifyPayment({
+                orderId: response.razorpay_order_id || paymentOrder.orderId,
+                paymentId: response.razorpay_payment_id,
+                signature: response.razorpay_signature,
+              })
+
+              if (verifyRes.success) {
+                await createAndSaveOrder(response.razorpay_payment_id, 'razorpay')
+              } else {
+                setErrorMessage('Payment verification failed on server.')
+                setIsProcessing(false)
+              }
+            } catch (vErr: any) {
+              setErrorMessage(vErr.message || 'Error verifying Razorpay transaction')
+              setIsProcessing(false)
+            }
+          },
+          prefill: {
+            name: selectedAddress.fullName || user.name || '',
+            email: user.email || '',
+            contact: selectedAddress.phone || user.phone || '',
+          },
+          theme: {
+            color: '#800020', // Burgundy
+          },
+          modal: {
+            ondismiss: function () {
+              setIsProcessing(false)
+            },
+          },
+        }
+
+        const rzp = new (window as any).Razorpay(options)
+        rzp.on('payment.failed', function (failRes: any) {
+          setErrorMessage(failRes.error?.description || 'Payment was declined')
+          setIsProcessing(false)
+        })
+        rzp.open()
+      } else {
+        setErrorMessage(
+          'Payment gateway is loading or was blocked by an ad-blocker. Please refresh or try again, or select Cash on Delivery.'
+        )
+        setIsProcessing(false)
+      }
     } catch (err: any) {
       setErrorMessage(err.message || 'Failed to place order. Please try again.')
       setIsProcessing(false)
@@ -377,9 +434,9 @@ export default function CheckoutPage() {
 
             <div className="space-y-4">
               <div
-                onClick={() => setPaymentMethod('mock')}
+                onClick={() => setPaymentMethod('razorpay')}
                 className={`p-5 rounded-2xl border cursor-pointer transition-all flex items-center justify-between ${
-                  paymentMethod === 'mock'
+                  paymentMethod === 'razorpay'
                     ? 'border-burgundy bg-cream/40 ring-1 ring-burgundy shadow-sm'
                     : 'border-sand bg-ivory hover:border-copper'
                 }`}
@@ -394,10 +451,10 @@ export default function CheckoutPage() {
                     </span>
                   </div>
                   <p className="text-xs text-taupe mt-1">
-                    Processed safely via verified payment gateway sandbox abstraction.
+                    Processed securely via live Razorpay gateway (UPI, Cards, NetBanking, QR).
                   </p>
                 </div>
-                {paymentMethod === 'mock' && <CheckCircle2 className="w-5 h-5 text-burgundy" />}
+                {paymentMethod === 'razorpay' && <CheckCircle2 className="w-5 h-5 text-burgundy" />}
               </div>
 
               <div
@@ -453,7 +510,7 @@ export default function CheckoutPage() {
               <div className="p-4 bg-ivory rounded-2xl border border-sand text-xs space-y-1">
                 <span className="font-semibold uppercase tracking-wider text-copper">Payment Method</span>
                 <p className="font-medium text-cocoa text-sm">
-                  {paymentMethod === 'mock' ? 'Instant Online Payment (Sandbox)' : 'Cash on Delivery'}
+                  {paymentMethod === 'razorpay' ? 'Instant Online Payment (Razorpay Live)' : 'Cash on Delivery'}
                 </p>
                 <p className="text-taupe">Customer: {user.name} ({user.email})</p>
                 {deliveryNotes && <p className="italic text-taupe mt-2">Note: &ldquo;{deliveryNotes}&rdquo;</p>}

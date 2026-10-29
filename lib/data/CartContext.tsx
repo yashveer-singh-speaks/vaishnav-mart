@@ -55,7 +55,14 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       const remoteCart = await CartRepository.getCart(user.uid)
       const guestCartRaw = localStorage.getItem('vm_guest_cart')
-      const guestItems: CartItem[] = guestCartRaw ? JSON.parse(guestCartRaw) : []
+      let guestItems: CartItem[] = []
+      if (guestCartRaw) {
+        try {
+          guestItems = JSON.parse(guestCartRaw)
+        } catch {
+          guestItems = []
+        }
+      }
 
       let merged: CartItem[] = remoteCart ? [...remoteCart.items] : []
 
