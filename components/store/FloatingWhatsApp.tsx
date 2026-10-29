@@ -16,29 +16,29 @@ export const FloatingWhatsApp: React.FC<FloatingWhatsAppProps> = ({
   return (
     <aside
       aria-label="Direct WhatsApp Support"
-      className="fixed bottom-6 right-6 z-50 flex items-center group pointer-events-auto print:hidden"
+      className="fixed bottom-5 left-5 z-50 flex items-center group pointer-events-auto print:hidden"
     >
-      {/* Tooltip on hover */}
-      <span className="hidden sm:inline-block mr-3 px-3.5 py-1.5 rounded-full bg-porcelain text-cocoa text-xs font-semibold shadow-lg border border-sand opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none transform translate-x-2 group-hover:translate-x-0">
-        Chat with us on WhatsApp
-      </span>
-
       {/* Floating Badge Button */}
       <a
         href={whatsappUrl}
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Chat on WhatsApp"
-        className="w-14 h-14 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-2xl hover:bg-[#20ba5a] hover:scale-110 active:scale-95 transition-all duration-300 ring-4 ring-white/50"
+        className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-lg hover:bg-[#20ba5a] hover:scale-110 active:scale-95 transition-all duration-300 ring-2 ring-white/70"
       >
-        <MessageCircle className="w-7 h-7 fill-current stroke-white stroke-[1.5]" />
-        
+        <MessageCircle className="w-5 h-5 sm:w-5 sm:h-5 fill-current stroke-white stroke-[1.5]" />
+
         {/* Subtle pulsating ping ring */}
-        <span className="absolute -top-1 -right-1 flex h-4 w-4">
+        <span className="absolute -top-0.5 -right-0.5 flex h-2.5 w-2.5">
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#25D366] opacity-75" />
-          <span className="relative inline-flex rounded-full h-4 w-4 bg-[#128C7E] border-2 border-white" />
+          <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#128C7E] border border-white" />
         </span>
       </a>
+
+      {/* Tooltip on hover (appears to the right since badge is on the left) */}
+      <span className="hidden sm:inline-block ml-2.5 px-3 py-1 rounded-full bg-porcelain text-cocoa text-[11px] font-semibold shadow-md border border-sand opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none transform -translate-x-2 group-hover:translate-x-0">
+        WhatsApp
+      </span>
     </aside>
   )
 }
